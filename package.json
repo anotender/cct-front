@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "open": "ng serve --open",
-    "build": "ng build",
+    "build": "ng build --prod --base-href https://anotender.github.io/cct-front/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
