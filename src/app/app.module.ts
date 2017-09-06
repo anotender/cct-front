@@ -9,9 +9,12 @@ import {AuthService} from "./service/auth.service";
 import {AuthConfig, AuthHttp} from "angular2-jwt";
 import {Http, HttpModule, RequestOptions} from "@angular/http";
 import {FormsModule} from "@angular/forms";
+import {RegisterComponent} from './component/register/register.component';
+import {UserService} from "./service/user.service";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
   {path: '**', component: AppComponent}
 ];
 
@@ -23,7 +26,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   declarations: [
     AppComponent,
     NavbarComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -32,6 +36,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule
   ],
   providers: [
+    UserService,
     AuthService,
     {
       provide: AuthHttp,
