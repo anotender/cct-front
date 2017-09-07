@@ -7,7 +7,7 @@ import {Observable} from "rxjs/Rx";
 @Injectable()
 export class UserService {
 
-  private API_PREFIX = AppComponent.API_PREFIX + '/user';
+  private API_PREFIX = AppComponent.API_PREFIX + '/users';
   private HEADERS = new Headers({'Content-Type': 'application/json'});
   private OPTIONS = new RequestOptions({headers: this.HEADERS});
 

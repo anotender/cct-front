@@ -15,7 +15,7 @@ import {UserService} from "./service/user.service";
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: '**', component: AppComponent}
+  {path: '**', component: LoginComponent}
 ];
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
