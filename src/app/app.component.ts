@@ -7,4 +7,10 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   public static API_PREFIX = 'http://localhost:8080/api';
+
+  notificationsOptions = {
+    timeOut: 2000,
+    pauseOnHover: false,
+    showProgressBar: false
+  };
 }

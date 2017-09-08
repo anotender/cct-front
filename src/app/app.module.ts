@@ -11,6 +11,8 @@ import {Http, HttpModule, RequestOptions} from "@angular/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RegisterComponent} from './component/register/register.component';
 import {UserService} from "./service/user.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {SimpleNotificationsModule} from "angular2-notifications";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -32,6 +34,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   imports: [
     RouterModule.forRoot(appRoutes),
     BrowserModule,
+    BrowserAnimationsModule,
+    SimpleNotificationsModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     HttpModule
