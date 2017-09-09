@@ -7,7 +7,7 @@ import {Observable} from "rxjs/Rx";
 @Injectable()
 export class UserService {
 
-  private API_PREFIX = AppComponent.API_PREFIX + '/users';
+  private USERS_API_PREFIX = AppComponent.API_PREFIX + '/users';
   private HEADERS = new Headers({'Content-Type': 'application/json'});
   private OPTIONS = new RequestOptions({headers: this.HEADERS});
 
@@ -17,7 +17,7 @@ export class UserService {
   save(user: User): Observable<any> {
     let body = JSON.stringify(user);
     return this.http
-      .post(this.API_PREFIX, body, this.OPTIONS)
+      .post(this.USERS_API_PREFIX, body, this.OPTIONS)
       .catch(err => Observable.throw(err));
   }
 

@@ -4,24 +4,31 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {NavbarComponent} from './component/navbar/navbar.component';
 import {LoginComponent} from './component/login/login.component';
+import {RegisterComponent} from './component/register/register.component';
+import {DashboardComponent} from './component/dashboard/dashboard.component';
 import {RouterModule, Routes} from "@angular/router";
 import {AuthService} from "./service/auth.service";
 import {AuthConfig, AuthHttp} from "angular2-jwt";
 import {Http, HttpModule, RequestOptions} from "@angular/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {RegisterComponent} from './component/register/register.component';
 import {UserService} from "./service/user.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {SimpleNotificationsModule} from "angular2-notifications";
+import {AuthGuard} from "./guard/auth.guard";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: '**', component: LoginComponent}
+  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: '**', component: DashboardComponent, canActivate: [AuthGuard]}
 ];
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig(), http, options);
+  let authConfig: AuthConfig = new AuthConfig({
+    tokenName: 'token',
+    tokenGetter: () => localStorage.getItem('token')
+  });
+  return new AuthHttp(authConfig, http, options);
 }
 
 @NgModule({
@@ -29,7 +36,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AppComponent,
     NavbarComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    DashboardComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -43,6 +51,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   providers: [
     UserService,
     AuthService,
+    AuthGuard,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
