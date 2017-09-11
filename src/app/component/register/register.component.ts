@@ -37,7 +37,10 @@ export class RegisterComponent implements OnInit {
 
   register(value): void {
     this.userService
-      .save(this.mapFormValueToUser(value))
+      .save({
+        email: value.email,
+        password: value.password
+      })
       .subscribe(
         res => {
           this.notificationsService.success('User ' + value.email + ' created!');
@@ -45,15 +48,6 @@ export class RegisterComponent implements OnInit {
         },
         err => this.notificationsService.error('Cannot create user ' + value.email)
       );
-  }
-
-  private mapFormValueToUser(value): User {
-    let user: User = new User();
-
-    user.email = value.email;
-    user.password = value.password;
-
-    return user;
   }
 
 }

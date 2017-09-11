@@ -1,22 +1,36 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../service/auth.service";
-import {Credentials} from "../../model/credentials";
 import {Router} from "@angular/router";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
-  public credentials: Credentials = new Credentials();
+  email: FormControl;
+  password: FormControl;
+  loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {
   }
 
-  login(): void {
-    this.authService.login(this.credentials);
+  ngOnInit(): void {
+    this.email = new FormControl('', [Validators.required, Validators.email]);
+    this.password = new FormControl('', [Validators.required, Validators.minLength(8)]);
+    this.loginForm = this.fb.group({
+      email: this.email,
+      password: this.password
+    });
+  }
+
+  login(value): void {
+    this.authService.login({
+      username: value.email,
+      password: value.password
+    });
   }
 
   register(): void {
@@ -24,7 +38,7 @@ export class LoginComponent {
   }
 
   forgotPassword(): void {
-    console.log('forgot password...');
+    this.router.navigateByUrl('/password');
   }
 
 }

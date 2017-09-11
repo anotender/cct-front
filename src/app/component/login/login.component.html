@@ -1,15 +1,23 @@
 <div class="col-md-offset-4 col-md-4">
   <div class="jumbotron">
-    <form (ngSubmit)="login()" #loginForm="ngForm">
-      <div class="form-group">
+    <form (ngSubmit)="login(loginForm.value)" [formGroup]="loginForm">
+      <div class="form-group" [ngClass]="{'has-error': email.invalid && (email.dirty || email.touched)}">
         <input type="email" name="email" placeholder="Email" class="form-control" required="required"
-               [(ngModel)]="credentials.username"/>
+               formControlName="email"/>
+        <div *ngIf="email.invalid && (email.dirty || email.touched)">
+          <span class="help-block" *ngIf="email.errors.required">This field is required</span>
+          <span class="help-block" *ngIf="email.errors.email">Provide valid email address</span>
+        </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" [ngClass]="{'has-error': password.invalid && (password.dirty || password.touched)}">
         <input type="password" name="password" placeholder="Password" class="form-control" required="required"
-               [(ngModel)]="credentials.password"/>
+               formControlName="password"/>
+        <div *ngIf="password.invalid && (password.dirty || password.touched)">
+          <span class="help-block" *ngIf="password.errors.required">This field is required</span>
+          <span class="help-block" *ngIf="password.errors.minlength">Password must be at least 8 characters long</span>
+        </div>
       </div>
-      <button class="btn btn-primary btn-block" type="submit">Sign In</button>
+      <button class="btn btn-primary btn-block" type="submit" [disabled]="loginForm.invalid">Sign In</button>
     </form>
     <br>
     <h5 class="text-center"><a class="link" (click)="register()">Not a member? Create a free account!</a></h5>

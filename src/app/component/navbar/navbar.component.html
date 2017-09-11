@@ -1,5 +1,5 @@
 <nav class="navbar navbar-default navbar-static-top">
-  <div class="container">
+  <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
               aria-expanded="false" aria-controls="navbar">
@@ -12,7 +12,14 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><a class="link" (click)="logout()" *ngIf="authenticated()">{{getCurrentUserEmail()}}</a></li>
+        <li class="dropdown" *ngIf="authenticated()">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            {{getCurrentUserEmail()}}
+            <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a class="link" (click)="logout()">Sign Out</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
