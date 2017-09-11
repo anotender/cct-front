@@ -15,11 +15,15 @@ import {UserService} from "./service/user.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {SimpleNotificationsModule} from "angular2-notifications";
 import {AuthGuard} from "./guard/auth.guard";
+import {CarListComponent} from './component/car-list/car-list.component';
+import {MakeService} from "./service/make.service";
+import {ModelService} from "./service/model.service";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: 'cars', component: CarListComponent, canActivate: [AuthGuard]},
   {path: '**', component: DashboardComponent, canActivate: [AuthGuard]}
 ];
 
@@ -37,7 +41,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    DashboardComponent
+    DashboardComponent,
+    CarListComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -50,6 +55,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   ],
   providers: [
     UserService,
+    MakeService,
+    ModelService,
     AuthService,
     AuthGuard,
     {
