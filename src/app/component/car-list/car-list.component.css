@@ -1,3 +1,8 @@
 .search-input {
   width: 100%;
 }
+
+.scrollable {
+  max-height: 80vh;
+  overflow-y: auto;
+}

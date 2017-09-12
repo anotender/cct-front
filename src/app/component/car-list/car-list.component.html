@@ -1,8 +1,9 @@
 <div class="col-md-3">
-  <div class="list-group">
-    <input class="list-group-item search-input" type="text" [(ngModel)]="makeFilterString"
-           placeholder="Search for make"/>
-    <a class="list-group-item link" *ngFor="let make of makes | makeFilter:makeFilterString" (click)="selectMake(make)">
+  <input class="list-group-item search-input" type="text" [(ngModel)]="makeFilterString"
+         placeholder="Search for make"/>
+  <div class="list-group scrollable">
+    <a class="list-group-item link active" [ngClass]="{'active': make === selectedMake}"
+       *ngFor="let make of makes | makeFilter:makeFilterString" (click)="selectMake(make)">
       <!--<img src="{{make.logoUrl}}" class="img-responsive">-->
       {{make.name}}
       <span class="badge">{{make.models.length}}</span>
@@ -10,22 +11,23 @@
   </div>
 </div>
 <div class="col-md-3" *ngIf="selectedMake !== null">
-  <div class="list-group">
-    <input class="list-group-item search-input" type="text" [(ngModel)]="modelFilterString"
-           placeholder="Search for model"/>
-    <a class="list-group-item link" *ngFor="let model of models | modelFilter:modelFilterString"
-       (click)="selectModel(model)">
+  <input class="list-group-item search-input" type="text" [(ngModel)]="modelFilterString"
+         placeholder="Search for model"/>
+  <div class="list-group scrollable">
+    <a class="list-group-item link" [ngClass]="{'active': model === selectedModel}"
+       *ngFor="let model of models | modelFilter:modelFilterString" (click)="selectModel(model)">
       {{model.name}}
     </a>
   </div>
 </div>
 <div class="col-md-3" *ngIf="selectedModel !== null">
-  <div class="list-group">
-    <input class="list-group-item search-input" type="text" [(ngModel)]="versionFilterString"
-           placeholder="Search for version"/>
-    <a class="list-group-item link" *ngFor="let version of versions | versionFilter:versionFilterString"
-       (click)="selectVersion(version)">
+  <input class="list-group-item search-input" type="text" [(ngModel)]="versionFilterString"
+         placeholder="Search for version"/>
+  <div class="list-group scrollable">
+    <a class="list-group-item link" [ngClass]="{'active': selectedVersion && version.id === selectedVersion.id}"
+       *ngFor="let version of versions | versionFilter:versionFilterString" (click)="selectVersion(version)">
       {{version.name}}
+      <span class="badge">{{version.fuel}}</span>
       <span class="badge">{{version.years}}</span>
     </a>
   </div>
@@ -35,11 +37,15 @@
     {{selectedModel.name}}
     <small>{{selectedVersion.name}}</small>
   </h3>
-  <table class="table table-bordered table-hover">
+  <table class="table table-bordered">
     <tbody>
     <tr>
       <td>Years</td>
       <td>{{selectedVersion.years}}</td>
+    </tr>
+    <tr>
+      <td>Body</td>
+      <td>{{selectedModel.body}}</td>
     </tr>
     <tr>
       <td>Fuel</td>

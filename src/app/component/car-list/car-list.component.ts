@@ -36,6 +36,8 @@ export class CarListComponent implements OnInit {
     this.selectedMake = make;
     this.selectedModel = null;
     this.selectedVersion = null;
+    this.models.length = 0;
+    this.versions.length = 0;
     this.makeService
       .getModelsForMake(make.id)
       .subscribe(data => this.models = data);
@@ -44,12 +46,14 @@ export class CarListComponent implements OnInit {
   selectModel(model: Model): void {
     this.selectedModel = model;
     this.selectedVersion = null;
+    this.versions.length = 0;
     this.modelService
       .getVersionsForModel(model.id)
       .subscribe(data => this.versions = data);
   }
 
   selectVersion(version: Version): void {
+    this.selectedVersion = version;
     this.versionService
       .getVersion(version.id)
       .subscribe(data => this.selectedVersion = data);
