@@ -4,6 +4,7 @@ import {Make} from "../../model/make";
 import {Model} from "../../model/model";
 import {ModelService} from "../../service/model.service";
 import {Version} from "../../model/version";
+import {VersionService} from "../../service/version.service";
 
 @Component({
   selector: 'app-car-list',
@@ -15,10 +16,14 @@ export class CarListComponent implements OnInit {
   makes: Make[] = [];
   models: Model[] = [];
   versions: Version[] = [];
-  selectedMake: Make = new Make();
-  selectedModel: Model = new Model();
+  selectedMake: Make = null;
+  selectedModel: Model = null;
+  selectedVersion: Version = null;
+  makeFilterString: string = '';
+  modelFilterString: string = '';
+  versionFilterString: string = '';
 
-  constructor(private makeService: MakeService, private modelService: ModelService) {
+  constructor(private makeService: MakeService, private modelService: ModelService, private versionService: VersionService) {
   }
 
   ngOnInit() {
@@ -29,6 +34,8 @@ export class CarListComponent implements OnInit {
 
   selectMake(make: Make): void {
     this.selectedMake = make;
+    this.selectedModel = null;
+    this.selectedVersion = null;
     this.makeService
       .getModelsForMake(make.id)
       .subscribe(data => this.models = data);
@@ -36,9 +43,16 @@ export class CarListComponent implements OnInit {
 
   selectModel(model: Model): void {
     this.selectedModel = model;
+    this.selectedVersion = null;
     this.modelService
       .getVersionsForModel(model.id)
       .subscribe(data => this.versions = data);
+  }
+
+  selectVersion(version: Version): void {
+    this.versionService
+      .getVersion(version.id)
+      .subscribe(data => this.selectedVersion = data);
   }
 
 }

@@ -18,6 +18,10 @@ import {AuthGuard} from "./guard/auth.guard";
 import {CarListComponent} from './component/car-list/car-list.component';
 import {MakeService} from "./service/make.service";
 import {ModelService} from "./service/model.service";
+import {MakeFilterPipe} from "./pipe/make-filter.pipe";
+import {ModelFilterPipe} from "./pipe/model-filter.pipe";
+import {VersionFilterPipe} from "./pipe/version-filter.pipe";
+import {VersionService} from "./service/version.service";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -42,7 +46,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
-    CarListComponent
+    CarListComponent,
+    MakeFilterPipe,
+    ModelFilterPipe,
+    VersionFilterPipe
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -57,6 +64,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UserService,
     MakeService,
     ModelService,
+    VersionService,
     AuthService,
     AuthGuard,
     {

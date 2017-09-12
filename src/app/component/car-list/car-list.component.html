@@ -1,29 +1,62 @@
 <div class="col-md-3">
   <div class="list-group">
-    <input class="list-group-item" type="text"/>
-    <a class="list-group-item link" *ngFor="let make of makes" (click)="selectMake(make)">
+    <input class="list-group-item search-input" type="text" [(ngModel)]="makeFilterString"
+           placeholder="Search for make"/>
+    <a class="list-group-item link" *ngFor="let make of makes | makeFilter:makeFilterString" (click)="selectMake(make)">
       <!--<img src="{{make.logoUrl}}" class="img-responsive">-->
       {{make.name}}
       <span class="badge">{{make.models.length}}</span>
     </a>
   </div>
 </div>
-<div class="col-md-3">
+<div class="col-md-3" *ngIf="selectedMake !== null">
   <div class="list-group">
-    <a class="list-group-item link" *ngFor="let model of models" (click)="selectModel(model)">
+    <input class="list-group-item search-input" type="text" [(ngModel)]="modelFilterString"
+           placeholder="Search for model"/>
+    <a class="list-group-item link" *ngFor="let model of models | modelFilter:modelFilterString"
+       (click)="selectModel(model)">
       {{model.name}}
     </a>
   </div>
 </div>
-<div class="col-md-3">
+<div class="col-md-3" *ngIf="selectedModel !== null">
   <div class="list-group">
-    <a class="list-group-item link" *ngFor="let version of versions">
-      <!--<img src="{{make.logoUrl}}" class="img-responsive">-->
+    <input class="list-group-item search-input" type="text" [(ngModel)]="versionFilterString"
+           placeholder="Search for version"/>
+    <a class="list-group-item link" *ngFor="let version of versions | versionFilter:versionFilterString"
+       (click)="selectVersion(version)">
       {{version.name}}
       <span class="badge">{{version.years}}</span>
     </a>
   </div>
 </div>
-<div class="col-md-3">
-
+<div class="col-md-3" *ngIf="selectedVersion !== null">
+  <h3>
+    {{selectedModel.name}}
+    <small>{{selectedVersion.name}}</small>
+  </h3>
+  <table class="table table-bordered table-hover">
+    <tbody>
+    <tr>
+      <td>Years</td>
+      <td>{{selectedVersion.years}}</td>
+    </tr>
+    <tr>
+      <td>Fuel</td>
+      <td>{{selectedVersion.fuel}}</td>
+    </tr>
+    <tr>
+      <td>City fuel consumption</td>
+      <td>{{selectedVersion.cityFuelConsumption}}</td>
+    </tr>
+    <tr>
+      <td>Highway fuel consumption</td>
+      <td>{{selectedVersion.highwayFuelConsumption}}</td>
+    </tr>
+    <tr>
+      <td>Mixed fuel consumption</td>
+      <td>{{selectedVersion.mixedFuelConsumption}}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
