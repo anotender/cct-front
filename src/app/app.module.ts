@@ -20,7 +20,6 @@ import {MakeService} from "./service/make.service";
 import {ModelService} from "./service/model.service";
 import {MakeFilterPipe} from "./pipe/make-filter.pipe";
 import {ModelFilterPipe} from "./pipe/model-filter.pipe";
-import {VersionFilterPipe} from "./pipe/version-filter.pipe";
 import {VersionService} from "./service/version.service";
 
 const appRoutes: Routes = [
@@ -48,8 +47,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DashboardComponent,
     CarListComponent,
     MakeFilterPipe,
-    ModelFilterPipe,
-    VersionFilterPipe
+    ModelFilterPipe
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
