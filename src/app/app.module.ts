@@ -1,18 +1,18 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from "@angular/router";
+import {Http, HttpModule, RequestOptions} from "@angular/http";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import {AppComponent} from './app.component';
 import {NavbarComponent} from './component/navbar/navbar.component';
 import {LoginComponent} from './component/login/login.component';
 import {RegisterComponent} from './component/register/register.component';
 import {DashboardComponent} from './component/dashboard/dashboard.component';
-import {RouterModule, Routes} from "@angular/router";
 import {AuthService} from "./service/auth.service";
 import {AuthConfig, AuthHttp} from "angular2-jwt";
-import {Http, HttpModule, RequestOptions} from "@angular/http";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {UserService} from "./service/user.service";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {SimpleNotificationsModule} from "angular2-notifications";
 import {AuthGuard} from "./guard/auth.guard";
 import {CarListComponent} from './component/car-list/car-list.component';
