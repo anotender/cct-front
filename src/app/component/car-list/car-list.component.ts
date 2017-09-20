@@ -5,6 +5,7 @@ import {Model} from "../../model/model";
 import {ModelService} from "../../service/model.service";
 import {Version} from "../../model/version";
 import {VersionService} from "../../service/version.service";
+import {NgProgressService} from "ng2-progressbar";
 
 @Component({
   selector: 'app-car-list',
@@ -22,40 +23,66 @@ export class CarListComponent implements OnInit {
   makeFilterString: string = '';
   modelFilterString: string = '';
 
-  constructor(private makeService: MakeService, private modelService: ModelService, private versionService: VersionService) {
+  constructor(private makeService: MakeService,
+              private modelService: ModelService,
+              private versionService: VersionService,
+              private progressService: NgProgressService) {
   }
 
   ngOnInit() {
+    this.progressService.start();
     this.makeService
       .getMakes()
-      .subscribe(data => this.makes = data);
+      .subscribe(data => {
+        this.makes = data;
+        this.progressService.done();
+      });
   }
 
   selectMake(make: Make): void {
+    if (make === this.selectedMake) return;
+
+    this.progressService.start();
     this.selectedMake = make;
     this.selectedModel = null;
     this.selectedVersion = null;
+    this.modelFilterString = '';
     this.models.length = 0;
     this.versions = {};
     this.makeService
       .getModelsForMake(make.id)
-      .subscribe(data => this.models = data);
+      .subscribe(data => {
+        this.models = data;
+        this.progressService.done();
+      });
   }
 
   selectModel(model: Model): void {
+    if (model === this.selectedModel) return;
+
+    this.progressService.start();
     this.selectedModel = model;
     this.selectedVersion = null;
     this.versions = {};
     this.modelService
       .getVersionsForModel(model.id)
-      .subscribe(data => this.versions = this.groupVersions(data));
+      .subscribe(data => {
+        this.versions = this.groupVersions(data);
+        this.progressService.done();
+      });
   }
 
   selectVersion(version: Version): void {
+    if (this.selectedVersion && version.id === this.selectedVersion.id) return;
+
+    this.progressService.start();
     this.selectedVersion = version;
     this.versionService
       .getVersion(version.id)
-      .subscribe(data => this.selectedVersion = data);
+      .subscribe(data => {
+        this.selectedVersion = data;
+        this.progressService.done();
+      });
   }
 
   getYears(): string[] {

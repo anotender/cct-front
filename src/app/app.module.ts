@@ -21,6 +21,7 @@ import {ModelService} from "./service/model.service";
 import {MakeFilterPipe} from "./pipe/make-filter.pipe";
 import {ModelFilterPipe} from "./pipe/model-filter.pipe";
 import {VersionService} from "./service/version.service";
+import {NgProgressModule} from "ng2-progressbar";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -56,7 +57,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SimpleNotificationsModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    NgProgressModule
   ],
   providers: [
     UserService,

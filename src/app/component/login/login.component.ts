@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {NgProgressService} from "ng2-progressbar";
+import {NotificationsService} from "angular2-notifications/dist";
 
 @Component({
   selector: 'app-login',
@@ -13,8 +15,13 @@ export class LoginComponent implements OnInit {
   email: FormControl;
   password: FormControl;
   loginForm: FormGroup;
+  loginButtonDisabled: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {
+  constructor(private authService: AuthService,
+              private router: Router,
+              private fb: FormBuilder,
+              private notificationsService: NotificationsService,
+              private progressService: NgProgressService) {
   }
 
   ngOnInit(): void {
@@ -27,10 +34,28 @@ export class LoginComponent implements OnInit {
   }
 
   login(value): void {
-    this.authService.login({
-      username: value.email,
-      password: value.password
-    });
+    this.progressService.start();
+    this.loginButtonDisabled = true;
+    this.authService
+      .login({
+        username: value.email,
+        password: value.password
+      })
+      .subscribe(
+        response => {
+          localStorage.setItem('token', response.headers.get('Authorization'));
+          localStorage.setItem('email', value.email);
+          this.router.navigateByUrl('/dashboard');
+          this.progressService.done();
+          this.loginButtonDisabled = false;
+        },
+        error => {
+          console.log(error);
+          this.notificationsService.error('Incorrect username or password');
+          this.progressService.done();
+          this.loginButtonDisabled = false;
+        }
+      );
   }
 
   register(): void {

@@ -17,7 +17,9 @@
           <span class="help-block" *ngIf="password.errors.minlength">Password must be at least 8 characters long</span>
         </div>
       </div>
-      <button class="btn btn-primary btn-block" type="submit" [disabled]="loginForm.invalid">Sign In</button>
+      <button class="btn btn-primary btn-block" type="submit" [disabled]="loginForm.invalid || loginButtonDisabled">
+        Sign In
+      </button>
     </form>
     <br>
     <h5 class="text-center"><a class="link" (click)="register()">Not a member? Create a free account!</a></h5>
