@@ -24,7 +24,10 @@
         <span class="help-block"
               *ngIf="confirmedPassword.invalid && (confirmedPassword.dirty || confirmedPassword.touched)">Passwords must be equal</span>
       </div>
-      <button class="btn btn-primary btn-block" type="submit" [disabled]="registerForm.invalid">Sign Up</button>
+      <button class="btn btn-primary btn-block" type="submit"
+              [disabled]="registerForm.invalid || registerButtonDisabled">
+        Sign Up
+      </button>
     </form>
   </div>
 </div>

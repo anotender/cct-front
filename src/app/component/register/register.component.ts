@@ -5,6 +5,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {matchOtherValidator} from "@moebius/ng-validators";
 import {Router} from "@angular/router";
 import {NotificationsService} from "angular2-notifications/dist";
+import {NgProgressService} from "ngx-progressbar";
 
 @Component({
   selector: 'app-register',
@@ -17,10 +18,12 @@ export class RegisterComponent implements OnInit {
   password: FormControl;
   confirmedPassword: FormControl;
   registerForm: FormGroup;
+  registerButtonDisabled: boolean = false;
 
   constructor(private userService: UserService,
               private notificationsService: NotificationsService,
               private fb: FormBuilder,
+              private progressService: NgProgressService,
               private router: Router) {
   }
 
@@ -36,6 +39,8 @@ export class RegisterComponent implements OnInit {
   }
 
   register(value): void {
+    this.registerButtonDisabled = true;
+    this.progressService.start();
     this.userService
       .save({
         email: value.email,
@@ -43,10 +48,16 @@ export class RegisterComponent implements OnInit {
       })
       .subscribe(
         res => {
-          this.notificationsService.success('User ' + value.email + ' created!');
+          this.progressService.done();
+          this.registerButtonDisabled = false;
+          this.notificationsService.success('User ' + value.email + ' created!', 'You can now sign in');
           this.router.navigateByUrl('/login');
         },
-        err => this.notificationsService.error('Cannot create user ' + value.email)
+        err => {
+          this.progressService.done();
+          this.registerButtonDisabled = false;
+          this.notificationsService.error('Cannot create user ' + value.email)
+        }
       );
   }
 
