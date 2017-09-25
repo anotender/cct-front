@@ -21,13 +21,15 @@ import {ModelService} from "./service/model.service";
 import {MakeFilterPipe} from "./pipe/make-filter.pipe";
 import {ModelFilterPipe} from "./pipe/model-filter.pipe";
 import {VersionService} from "./service/version.service";
-import {NgProgressModule} from "ng2-progressbar";
+import {NgProgressModule} from "ngx-progressbar";
+import {CarInfoComponent} from './component/car-info/car-info.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'cars', component: CarListComponent, canActivate: [AuthGuard]},
+  {path: 'cars/:id', component: CarInfoComponent, canActivate: [AuthGuard]},
   {path: '**', component: DashboardComponent, canActivate: [AuthGuard]}
 ];
 
@@ -48,7 +50,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DashboardComponent,
     CarListComponent,
     MakeFilterPipe,
-    ModelFilterPipe
+    ModelFilterPipe,
+    CarInfoComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

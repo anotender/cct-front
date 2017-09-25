@@ -1,0 +1,48 @@
+<div class="col-md-4">
+  <div class="media">
+    <div class="media-left">
+      <img class="media-object" src="{{selectedMake.logoUrl}}" alt="logo">
+    </div>
+    <div class="media-body">
+      <h3 class="media-heading">
+        {{selectedMake.name + ' ' + selectedModel.name}}
+        <small>{{selectedVersion.name}}</small>
+      </h3>
+      <table class="table table-bordered">
+        <tbody>
+        <tr>
+          <td>Years</td>
+          <td>{{selectedVersion.years}}</td>
+        </tr>
+        <tr>
+          <td>Body</td>
+          <td>{{selectedModel.body}}</td>
+        </tr>
+        <tr>
+          <td>Fuel</td>
+          <td>{{selectedVersion.fuel}}</td>
+        </tr>
+        <tr>
+          <td>City fuel consumption</td>
+          <td *ngIf="!isDataProvided(selectedVersion.cityFuelConsumption)">No data</td>
+          <td *ngIf="isDataProvided(selectedVersion.cityFuelConsumption)">
+            {{selectedVersion.cityFuelConsumption}}
+          </td>
+        </tr>
+        <tr>
+          <td>Highway fuel consumption</td>
+          <td *ngIf="!isDataProvided(selectedVersion.highwayFuelConsumption)">No data</td>
+          <td *ngIf="isDataProvided(selectedVersion.highwayFuelConsumption)">
+            {{selectedVersion.highwayFuelConsumption}}
+          </td>
+        </tr>
+        <tr>
+          <td>Mixed fuel consumption</td>
+          <td *ngIf="!isDataProvided(selectedVersion.mixedFuelConsumption)">No data</td>
+          <td *ngIf="isDataProvided(selectedVersion.mixedFuelConsumption)">{{selectedVersion.mixedFuelConsumption}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

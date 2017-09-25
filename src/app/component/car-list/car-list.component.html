@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-md-4">
   <input class="list-group-item search-input" type="text" [(ngModel)]="makeFilterString"
          placeholder="Search for make"/>
   <div class="list-group scrollable">
@@ -9,7 +9,7 @@
     </a>
   </div>
 </div>
-<div class="col-md-3" *ngIf="selectedMake !== null">
+<div class="col-md-4" *ngIf="selectedMake !== null">
   <input class="list-group-item search-input" type="text" [(ngModel)]="modelFilterString"
          placeholder="Search for model"/>
   <div class="list-group scrollable">
@@ -19,49 +19,14 @@
     </a>
   </div>
 </div>
-<div class="col-md-3" *ngIf="selectedModel !== null">
+<div class="col-md-4" *ngIf="selectedModel !== null">
   <div class="scrollable">
     <div class="list-group" *ngFor="let years of getYears()">
       <a class="list-group-item active">{{years}}</a>
-      <a class="list-group-item link" [ngClass]="{'active': selectedVersion && version.id === selectedVersion.id}"
-         *ngFor="let version of versions[years]" (click)="selectVersion(version)">
+      <a class="list-group-item link" *ngFor="let version of versions[years]" (click)="showCarInfo(version.id)">
         {{version.name}}
         <span class="badge">{{version.fuel}}</span>
       </a>
     </div>
   </div>
-</div>
-<div class="col-md-3" *ngIf="selectedVersion !== null">
-  <h3>
-    {{selectedModel.name}}
-    <small>{{selectedVersion.name}}</small>
-  </h3>
-  <table class="table table-bordered">
-    <tbody>
-    <tr>
-      <td>Years</td>
-      <td>{{selectedVersion.years}}</td>
-    </tr>
-    <tr>
-      <td>Body</td>
-      <td>{{selectedModel.body}}</td>
-    </tr>
-    <tr>
-      <td>Fuel</td>
-      <td>{{selectedVersion.fuel}}</td>
-    </tr>
-    <tr>
-      <td>City fuel consumption</td>
-      <td>{{selectedVersion.cityFuelConsumption}}</td>
-    </tr>
-    <tr>
-      <td>Highway fuel consumption</td>
-      <td>{{selectedVersion.highwayFuelConsumption}}</td>
-    </tr>
-    <tr>
-      <td>Mixed fuel consumption</td>
-      <td>{{selectedVersion.mixedFuelConsumption}}</td>
-    </tr>
-    </tbody>
-  </table>
 </div>

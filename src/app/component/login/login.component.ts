@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {NgProgressService} from "ng2-progressbar";
+import {NgProgressService} from "ngx-progressbar";
 import {NotificationsService} from "angular2-notifications/dist";
 
 @Component({

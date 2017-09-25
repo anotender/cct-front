@@ -13,6 +13,13 @@ export class MakeService {
   constructor(private authHttp: AuthHttp) {
   }
 
+  getMake(makeId: string): Observable<Make> {
+    return this.authHttp
+      .get(this.MAKES_API_PREFIX + '/' + makeId)
+      .map(res => res.json())
+      .catch(err => Observable.throw(err));
+  }
+
   getMakes(): Observable<Make[]> {
     return this.authHttp
       .get(this.MAKES_API_PREFIX)
