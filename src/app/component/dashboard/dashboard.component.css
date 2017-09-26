@@ -1,0 +1,8 @@
+.tile {
+  transition: all 0.5s ease;
+  background-color: white;
+}
+
+.tile:hover {
+  background-color: #18bc9c;
+}
