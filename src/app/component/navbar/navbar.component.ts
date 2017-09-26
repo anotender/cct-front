@@ -16,14 +16,6 @@ export class NavbarComponent {
     this.authService.logout();
   }
 
-  showCars(): void {
-    this.router.navigateByUrl('/cars');
-  }
-
-  showFuelStations(): void {
-    this.router.navigateByUrl('/fuelstations');
-  }
-
   authenticated(): boolean {
     return this.authService.authenticated();
   }
