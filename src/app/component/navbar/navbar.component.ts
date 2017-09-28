@@ -16,6 +16,10 @@ export class NavbarComponent {
     this.authService.logout();
   }
 
+  showDashboard(): void {
+    this.router.navigateByUrl('/dashboard');
+  }
+
   authenticated(): boolean {
     return this.authService.authenticated();
   }

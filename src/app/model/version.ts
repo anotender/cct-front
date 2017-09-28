@@ -7,4 +7,5 @@ export class Version {
   cityFuelConsumption: number = 0.0;
   highwayFuelConsumption: number = 0.0;
   mixedFuelConsumption: number = 0.0;
+  cars: string[] = []
 }

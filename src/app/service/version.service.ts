@@ -19,4 +19,11 @@ export class VersionService {
       .catch(err => Observable.throw(err));
   }
 
+  getVersionsOrderedByPopularity(limit: number): Observable<Version[]> {
+    return this.authHttp
+      .get(this.VERSIONS_API_PREFIX + '?orderbypopularity=true&limit=' + limit)
+      .map(res => res.json())
+      .catch(err => Observable.throw(err));
+  }
+
 }

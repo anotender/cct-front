@@ -1,4 +1,23 @@
-<div class="col-md-3"></div>
+<div class="col-md-3">
+  <div class="jumbotron">
+    <ul class="media-list">
+      <li class="media link car-tile" *ngFor="let object of popularVersions, let i = index" [attr.data-index]="i"
+          (click)="showCarInfo(object.version.id)">
+        <div class="media car-tile">
+          <div class="media-left">
+            <img class="media-object" src="{{object.make.logoUrl}}" alt="logo" style="height: 75px;width: 75px;">
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">
+              {{(i + 1) + '. ' + object.make.name + ' ' + object.model.name}}
+            </h4>
+            {{object.version.name}}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
 <div class="col-md-6">
   <div class="jumbotron">
     <div class="row">
@@ -21,10 +40,45 @@
       </div>
       <div class="col-md-6">
         <div class="link tile jumbotron" (click)="showFuelStations()">
-          Closest fuel stations
+          Nearest fuel stations
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="col-md-3"></div>
+<div class="col-md-3">
+  <div class="jumbotron">
+    <div class="row">
+      <div class="jumbotron tile diesel-tile">
+        <h3 class="fuel-price-info">
+          <small>Diesel</small>
+          4.30
+        </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="jumbotron tile gasoline-tile">
+        <h3 class="fuel-price-info">
+          <small>Pb95</small>
+          4.40
+        </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="jumbotron tile gasoline-tile">
+        <h3 class="fuel-price-info">
+          <small>Pb98</small>
+          4.50
+        </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="jumbotron tile lpg-tile">
+        <h3 class="fuel-price-info">
+          <small>LPG</small>
+          2.20
+        </h3>
+      </div>
+    </div>
+  </div>
+</div>
