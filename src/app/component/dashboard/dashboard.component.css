@@ -5,34 +5,42 @@
   font-size: 1.25em;
 }
 
-.car-tile {
-  transition: all 0.5s ease;
-  border-radius: 0 5px 5px 0;
-  background-color: white;
-}
-
-.car-tile:hover {
-  background-color: #18bc9c;
-}
-
 .tile:hover {
   background-color: #18bc9c;
   font-size: 1.5em;
 }
 
-.tile.diesel-tile:hover {
+.cars-table {
+  border-collapse: separate;
+  border-spacing: 0 1em;
+}
+
+.table-tile {
+  transition: all 0.5s ease;
+}
+
+.table-tile:hover {
+  background-color: #18bc9c;
+}
+
+.table-tile.diesel-tile:hover {
   background-color: gray;
 }
 
-.tile.gasoline-tile:hover {
+.table-tile.gasoline-tile:hover {
   background-color: darkgreen;
 }
 
-.tile.lpg-tile:hover {
+.table-tile.lpg-tile:hover {
   background-color: indianred;
 }
 
-h3.fuel-price-info {
+.logo {
+  height: 70px;
+  width: 70px;
+}
+
+h2.fuel-price-info {
   margin: 0;
   padding: 0;
 }

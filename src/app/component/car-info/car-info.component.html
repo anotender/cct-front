@@ -3,14 +3,14 @@
     <div class="media-left">
       <img class="media-object" src="{{selectedMake.logoUrl}}" alt="logo">
       <br>
-      <button class="btn btn-primary">Add to my cars</button>
+      <button class="btn btn-primary" (click)="addToMyCars()">Add to my cars</button>
     </div>
     <div class="media-body">
       <h3 class="media-heading">
         {{selectedMake.name + ' ' + selectedModel.name}}
         <small>{{selectedVersion.name}}</small>
       </h3>
-      <table class="table table-bordered">
+      <table class="table table-bordered table-hover">
         <tbody>
         <tr>
           <td>Years</td>

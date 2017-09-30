@@ -9,11 +9,14 @@ import {Model} from "../model/model";
 export class MakeService {
 
   private MAKES_API_PREFIX = AppComponent.API_PREFIX + '/makes';
+  private makes: Make[] = [];
 
   constructor(private authHttp: AuthHttp) {
   }
 
   getMake(makeId: string): Observable<Make> {
+    let make: Make = this.makes.find(m => m.id === makeId);
+    if (make) return Observable.of(make);
     return this.authHttp
       .get(this.MAKES_API_PREFIX + '/' + makeId)
       .map(res => res.json())
@@ -21,9 +24,13 @@ export class MakeService {
   }
 
   getMakes(): Observable<Make[]> {
+    if (this.makes.length !== 0) return Observable.of(this.makes);
     return this.authHttp
       .get(this.MAKES_API_PREFIX)
-      .map(res => res.json())
+      .map(res => {
+        this.makes = res.json();
+        return this.makes;
+      })
       .catch(err => Observable.throw(err));
   }
 

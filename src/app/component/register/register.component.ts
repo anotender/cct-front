@@ -41,11 +41,13 @@ export class RegisterComponent implements OnInit {
   register(value): void {
     this.registerButtonDisabled = true;
     this.progressService.start();
+
+    let user: User = new User();
+    user.email = value.email;
+    user.password = value.password;
+
     this.userService
-      .save({
-        email: value.email,
-        password: value.password
-      })
+      .save(user)
       .subscribe(
         res => {
           this.progressService.done();

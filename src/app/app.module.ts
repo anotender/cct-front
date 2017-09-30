@@ -23,10 +23,14 @@ import {ModelFilterPipe} from "./pipe/model-filter.pipe";
 import {VersionService} from "./service/version.service";
 import {NgProgressModule} from "ngx-progressbar";
 import {CarInfoComponent} from './component/car-info/car-info.component';
+import {UnauthGuard} from "./guard/unauth.guard";
+import {CarService} from "./service/car.service";
+import {BootstrapModalModule} from "ngx-modialog/plugins/bootstrap";
+import {ModalModule} from "ngx-modialog";
 
 const appRoutes: Routes = [
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  {path: 'login', component: LoginComponent, canActivate: [UnauthGuard]},
+  {path: 'register', component: RegisterComponent, canActivate: [UnauthGuard]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'cars', component: CarListComponent, canActivate: [AuthGuard]},
   {path: 'cars/:id', component: CarInfoComponent, canActivate: [AuthGuard]},
@@ -61,15 +65,19 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    NgProgressModule
+    NgProgressModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule
   ],
   providers: [
     UserService,
     MakeService,
     ModelService,
     VersionService,
+    CarService,
     AuthService,
     AuthGuard,
+    UnauthGuard,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,

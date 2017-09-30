@@ -7,6 +7,10 @@ import {NgProgressService} from "ngx-progressbar";
 import {VersionService} from "../../service/version.service";
 import {ModelService} from "../../service/model.service";
 import {MakeService} from "../../service/make.service";
+import {Modal} from 'ngx-modialog/plugins/bootstrap';
+import {AuthService} from "../../service/auth.service";
+import {CarService} from "../../service/car.service";
+import {NotificationsService} from "angular2-notifications/dist";
 
 @Component({
   selector: 'app-car-info',
@@ -23,7 +27,11 @@ export class CarInfoComponent implements OnInit {
               private progressService: NgProgressService,
               private versionService: VersionService,
               private modelService: ModelService,
-              private makeService: MakeService) {
+              private makeService: MakeService,
+              private authService: AuthService,
+              private carService: CarService,
+              private notificationsService: NotificationsService,
+              private modal: Modal) {
   }
 
   ngOnInit() {
@@ -44,6 +52,34 @@ export class CarInfoComponent implements OnInit {
 
   isDataProvided(n: number): boolean {
     return n && n != null && n !== 0;
+  }
+
+  addToMyCars(): void {
+    this.modal
+      .prompt()
+      .showClose(false)
+      .title('Adding ' + this.selectedMake.name + ' ' + this.selectedModel.name + ' ' + this.selectedVersion.name + ' to your cars')
+      .placeholder('Car name')
+      .open()
+      .then(dialogRef => {
+        dialogRef.result.then(name => {
+          this.progressService.start();
+          this.authService
+            .getCurrentUser()
+            .subscribe(user => this.carService
+              .save({
+                id: null,
+                name: name,
+                versionId: this.selectedVersion.id,
+                userId: user.id
+              })
+              .subscribe(res => {
+                this.progressService.done();
+                this.notificationsService.success('Car "' + name + '" has just been added to your cars!');
+              })
+            );
+        });
+      });
   }
 
 }

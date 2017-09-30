@@ -25,7 +25,7 @@ export class NavbarComponent {
   }
 
   getCurrentUserEmail(): string {
-    return localStorage.getItem('email');
+    return this.authService.getCurrentUserEmail();
   }
 
 }
