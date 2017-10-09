@@ -58,6 +58,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigateByUrl('/cars');
   }
 
+  showCarsComparison(): void {
+    this.router.navigateByUrl('/compare');
+  }
+
   showCarInfo(id: string): void {
     this.router.navigate(['/cars', id]);
   }

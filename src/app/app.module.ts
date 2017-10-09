@@ -27,11 +27,13 @@ import {UnauthGuard} from "./guard/unauth.guard";
 import {CarService} from "./service/car.service";
 import {BootstrapModalModule} from "ngx-modialog/plugins/bootstrap";
 import {ModalModule} from "ngx-modialog";
+import {ComparisonComponent} from './component/comparison/comparison.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [UnauthGuard]},
   {path: 'register', component: RegisterComponent, canActivate: [UnauthGuard]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: 'compare', component: ComparisonComponent, canActivate: [AuthGuard]},
   {path: 'cars', component: CarListComponent, canActivate: [AuthGuard]},
   {path: 'cars/:id', component: CarInfoComponent, canActivate: [AuthGuard]},
   {path: '**', component: DashboardComponent, canActivate: [AuthGuard]}
@@ -55,7 +57,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CarListComponent,
     MakeFilterPipe,
     ModelFilterPipe,
-    CarInfoComponent
+    CarInfoComponent,
+    ComparisonComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
