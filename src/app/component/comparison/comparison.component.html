@@ -48,6 +48,24 @@
           <td><b>Fuel</b></td>
           <td *ngFor="let c of carsToCompare">{{c.version.fuel}}</td>
         </tr>
+        <tr>
+          <td><b>City fuel consumption</b></td>
+          <td *ngFor="let c of carsToCompare">
+            {{isDataProvided(c.version.cityFuelConsumption) ? c.version.cityFuelConsumption : 'No data'}}
+          </td>
+        </tr>
+        <tr>
+          <td><b>Highway fuel consumption</b></td>
+          <td *ngFor="let c of carsToCompare">
+            {{isDataProvided(c.version.highwayFuelConsumption) ? c.version.highwayFuelConsumption : 'No data'}}
+          </td>
+        </tr>
+        <tr>
+          <td><b>Mixed fuel consumption</b></td>
+          <td *ngFor="let c of carsToCompare">
+            {{isDataProvided(c.version.mixedFuelConsumption) ? c.version.mixedFuelConsumption : 'No data'}}
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>

@@ -6,6 +6,7 @@ import {Model} from "../../model/model";
 import {Version} from "../../model/version";
 import {ModelService} from "../../service/model.service";
 import {Router} from "@angular/router";
+import {VersionService} from "../../service/version.service";
 
 @Component({
   selector: 'app-comparison',
@@ -24,6 +25,7 @@ export class ComparisonComponent implements OnInit {
 
   constructor(private makeService: MakeService,
               private modelService: ModelService,
+              private versionService: VersionService,
               private progressService: NgProgressService,
               private router: Router) {
   }
@@ -40,18 +42,27 @@ export class ComparisonComponent implements OnInit {
   }
 
   addToComparison(): void {
-    this.carsToCompare.push({
-      'make': this.selectedMake,
-      'model': this.selectedModel,
-      'version': this.selectedVersion
-    });
+    this.progressService.start();
+    this.versionService
+      .getVersion(this.selectedVersion.id)
+      .subscribe(
+        version => this.selectedVersion = version,
+        err => console.log(err),
+        () => {
+          this.carsToCompare.push({
+            'make': this.selectedMake,
+            'model': this.selectedModel,
+            'version': this.selectedVersion
+          });
 
-    this.selectedMake = null;
-    this.selectedModel = null;
-    this.selectedVersion = null;
-    this.models.length = 0;
-    this.versions.length = 0;
-    console.log(this.carsToCompare);
+          this.selectedMake = null;
+          this.selectedModel = null;
+          this.selectedVersion = null;
+          this.models.length = 0;
+          this.versions.length = 0;
+          this.progressService.done();
+        }
+      );
   }
 
   onMakeChange(make: Make): void {
@@ -86,6 +97,10 @@ export class ComparisonComponent implements OnInit {
 
   showCarInfo(id: string): void {
     this.router.navigate(['/cars', id]);
+  }
+
+  isDataProvided(n: number): boolean {
+    return n && n != null && n !== 0;
   }
 
 }
