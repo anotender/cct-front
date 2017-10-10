@@ -99,7 +99,11 @@ export class ComparisonComponent implements OnInit {
     this.router.navigate(['/cars', id]);
   }
 
-  isDataProvided(n: number): boolean {
+  prepareFuelConsumption(n: number): string {
+    return `${this.isDataProvided(n) ? n : 'No data'}`;
+  }
+
+  private isDataProvided(n: number): boolean {
     return n && n != null && n !== 0;
   }
 

@@ -21,58 +21,61 @@
     </button>
   </div>
 </div>
-<div class="row" style="margin: 25px">
-  <div class="panel panel-default" *ngIf="carsToCompare.length !== 0">
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-        <tr>
-          <th></th>
-          <th *ngFor="let c of carsToCompare">
-            <a class="link" (click)="showCarInfo(c.version.id)">
-              {{c.make.name + ' ' + c.model.name + ' ' + c.version.name}}
-            </a>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td><b>Years</b></td>
-          <td *ngFor="let c of carsToCompare">{{c.version.years}}</td>
-        </tr>
-        <tr>
-          <td><b>Body</b></td>
-          <td *ngFor="let c of carsToCompare">{{c.model.body}}</td>
-        </tr>
-        <tr>
-          <td><b>Fuel</b></td>
-          <td *ngFor="let c of carsToCompare">{{c.version.fuel}}</td>
-        </tr>
-        <tr>
-          <td><b>City fuel consumption</b></td>
-          <td *ngFor="let c of carsToCompare">
-            {{isDataProvided(c.version.cityFuelConsumption) ? c.version.cityFuelConsumption : 'No data'}}
-          </td>
-        </tr>
-        <tr>
-          <td><b>Highway fuel consumption</b></td>
-          <td *ngFor="let c of carsToCompare">
-            {{isDataProvided(c.version.highwayFuelConsumption) ? c.version.highwayFuelConsumption : 'No data'}}
-          </td>
-        </tr>
-        <tr>
-          <td><b>Mixed fuel consumption</b></td>
-          <td *ngFor="let c of carsToCompare">
-            {{isDataProvided(c.version.mixedFuelConsumption) ? c.version.mixedFuelConsumption : 'No data'}}
-          </td>
-        </tr>
-        </tbody>
-      </table>
+<br>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default" *ngIf="carsToCompare.length !== 0">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+          <tr>
+            <th></th>
+            <th *ngFor="let c of carsToCompare">
+              <a class="link" (click)="showCarInfo(c.version.id)">
+                {{c.make.name + ' ' + c.model.name + ' ' + c.version.name}}
+              </a>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><b>Years</b></td>
+            <td *ngFor="let c of carsToCompare">{{c.version.years}}</td>
+          </tr>
+          <tr>
+            <td><b>Body</b></td>
+            <td *ngFor="let c of carsToCompare">{{c.model.body}}</td>
+          </tr>
+          <tr>
+            <td><b>Fuel</b></td>
+            <td *ngFor="let c of carsToCompare">{{c.version.fuel}}</td>
+          </tr>
+          <tr>
+            <td><b>City fuel consumption</b></td>
+            <td *ngFor="let c of carsToCompare">
+              {{prepareFuelConsumption(c.version.cityFuelConsumption)}}
+            </td>
+          </tr>
+          <tr>
+            <td><b>Highway fuel consumption</b></td>
+            <td *ngFor="let c of carsToCompare">
+              {{prepareFuelConsumption(c.version.highwayFuelConsumption)}}
+            </td>
+          </tr>
+          <tr>
+            <td><b>Mixed fuel consumption</b></td>
+            <td *ngFor="let c of carsToCompare">
+              {{prepareFuelConsumption(c.version.mixedFuelConsumption)}}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  <div class="col-md-4 col-md-offset-4">
-    <div class="alert alert-info" *ngIf="carsToCompare.length === 0">
-      Choose cars to compare
+    <div class="col-md-offset-4 col-md-4">
+      <div class="alert alert-info" *ngIf="carsToCompare.length === 0">
+        Choose cars to compare
+      </div>
     </div>
   </div>
 </div>

@@ -12,7 +12,7 @@ import {UserService} from "./user.service";
 export class AuthService {
   private LOGIN_URI = AppComponent.API_PREFIX + '/login';
 
-  constructor(private http: Http, private userService: UserService, private router: Router) {
+  constructor(private http: Http, private router: Router) {
   }
 
   login(credentials: Credentials): Observable<Response> {
@@ -32,8 +32,8 @@ export class AuthService {
     return localStorage.getItem('email');
   }
 
-  getCurrentUser(): Observable<User> {
-    return this.userService.getUserByEmail(this.getCurrentUserEmail());
+  getCurrentUserId(): number {
+    return Number(localStorage.getItem('id'));
   }
 
 }

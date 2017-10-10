@@ -26,25 +26,53 @@
         </tr>
         <tr>
           <td>City fuel consumption</td>
-          <td *ngIf="!isDataProvided(selectedVersion.cityFuelConsumption)">No data</td>
-          <td *ngIf="isDataProvided(selectedVersion.cityFuelConsumption)">
-            {{selectedVersion.cityFuelConsumption}}
-          </td>
+          <td>{{prepareFuelConsumption(selectedVersion.cityFuelConsumption)}}</td>
         </tr>
         <tr>
           <td>Highway fuel consumption</td>
-          <td *ngIf="!isDataProvided(selectedVersion.highwayFuelConsumption)">No data</td>
-          <td *ngIf="isDataProvided(selectedVersion.highwayFuelConsumption)">
-            {{selectedVersion.highwayFuelConsumption}}
-          </td>
+          <td>{{prepareFuelConsumption(selectedVersion.highwayFuelConsumption)}}</td>
         </tr>
         <tr>
           <td>Mixed fuel consumption</td>
-          <td *ngIf="!isDataProvided(selectedVersion.mixedFuelConsumption)">No data</td>
-          <td *ngIf="isDataProvided(selectedVersion.mixedFuelConsumption)">{{selectedVersion.mixedFuelConsumption}}</td>
+          <td>{{prepareFuelConsumption(selectedVersion.mixedFuelConsumption)}}</td>
         </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Ratings
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item" *ngIf="ratings.length === 0">No ratings yet. Be the first one to rate this car!</li>
+      <li class="list-group-item" *ngFor="let r of ratings">{{r.comment}}</li>
+    </ul>
+    <div class="panel-footer">
+      <form (ngSubmit)="addRating()">
+        <div class="row">
+          <div class="col-md-12">
+            <textarea class="form-control" placeholder="Comment" name="comment" [(ngModel)]="comment"></textarea>
+          </div>
+        </div>
+        <br>
+        <div class="row form-group">
+          <div class="col-md-6">
+            <select name="points" class="form-control" [(ngModel)]="points">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

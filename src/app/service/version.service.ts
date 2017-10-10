@@ -3,6 +3,7 @@ import {AppComponent} from "../app.component";
 import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
 import {Version} from "../model/version";
+import {Rating} from "../model/rating";
 
 @Injectable()
 export class VersionService {
@@ -15,6 +16,13 @@ export class VersionService {
   getVersion(versionId: string): Observable<Version> {
     return this.authHttp
       .get(this.VERSIONS_API_PREFIX + '/' + versionId)
+      .map(res => res.json())
+      .catch(err => Observable.throw(err));
+  }
+
+  getRatingsForVersion(versionId: string): Observable<Rating[]> {
+    return this.authHttp
+      .get(this.VERSIONS_API_PREFIX + '/' + versionId + '/ratings')
       .map(res => res.json())
       .catch(err => Observable.throw(err));
   }

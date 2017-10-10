@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {NgProgressService} from "ngx-progressbar";
 import {NotificationsService} from "angular2-notifications/dist";
+import {UserService} from "../../service/user.service";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loginButtonDisabled: boolean = false;
 
-  constructor(private authService: AuthService,
+  constructor(private userService: UserService,
+              private authService: AuthService,
               private router: Router,
               private fb: FormBuilder,
               private notificationsService: NotificationsService,
@@ -45,9 +47,19 @@ export class LoginComponent implements OnInit {
         response => {
           localStorage.setItem('token', response.headers.get('Authorization'));
           localStorage.setItem('email', value.email);
-          this.router.navigateByUrl('/dashboard');
-          this.progressService.done();
-          this.loginButtonDisabled = false;
+          this.userService
+            .getUserByEmail(value.email)
+            .subscribe(
+              user => {
+                localStorage.setItem('id', user.id.toString());
+                this.router.navigateByUrl('/dashboard');
+              },
+              err => console.log(err),
+              () => {
+                this.progressService.done();
+                this.loginButtonDisabled = false;
+              }
+            );
         },
         error => {
           console.log(error);

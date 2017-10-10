@@ -11,6 +11,9 @@ import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {AuthService} from "../../service/auth.service";
 import {CarService} from "../../service/car.service";
 import {NotificationsService} from "angular2-notifications/dist";
+import {Rating} from "../../model/rating";
+import {Observable} from "rxjs/Observable";
+import {RatingService} from "../../service/rating.service";
 
 @Component({
   selector: 'app-car-info',
@@ -22,6 +25,9 @@ export class CarInfoComponent implements OnInit {
   selectedMake: Make = new Make();
   selectedModel: Model = new Model();
   selectedVersion: Version = new Version();
+  ratings: Rating[] = [];
+  points: number;
+  comment: string = '';
 
   constructor(private route: ActivatedRoute,
               private progressService: NgProgressService,
@@ -30,6 +36,7 @@ export class CarInfoComponent implements OnInit {
               private makeService: MakeService,
               private authService: AuthService,
               private carService: CarService,
+              private ratingService: RatingService,
               private notificationsService: NotificationsService,
               private modal: Modal) {
   }
@@ -41,17 +48,20 @@ export class CarInfoComponent implements OnInit {
         this.selectedVersion = version;
         this.modelService.getModel(version.modelId).subscribe(model => {
           this.selectedModel = model;
-          this.makeService.getMake(model.makeId).subscribe(make => {
-            this.selectedMake = make;
-            this.progressService.done();
-          });
+          Observable.forkJoin(
+            this.makeService.getMake(model.makeId),
+            this.versionService.getRatingsForVersion(params['id'])
+          ).subscribe(
+            res => {
+              this.selectedMake = res[0];
+              this.ratings = res[1];
+            },
+            err => console.log(err),
+            () => this.progressService.done()
+          );
         });
       });
     });
-  }
-
-  isDataProvided(n: number): boolean {
-    return n && n != null && n !== 0;
   }
 
   addToMyCars(): void {
@@ -64,22 +74,55 @@ export class CarInfoComponent implements OnInit {
       .then(dialogRef => {
         dialogRef.result.then(name => {
           this.progressService.start();
-          this.authService
-            .getCurrentUser()
-            .subscribe(user => this.carService
-              .save({
-                id: null,
-                name: name,
-                versionId: this.selectedVersion.id,
-                userId: user.id
-              })
-              .subscribe(res => {
-                this.progressService.done();
-                this.notificationsService.success('Car "' + name + '" has just been added to your cars!');
-              })
+          this.carService
+            .save({
+              id: null,
+              name: name,
+              versionId: this.selectedVersion.id,
+              userId: this.authService.getCurrentUserId()
+            })
+            .subscribe(
+              res => this.notificationsService.success('Car "' + name + '" has just been added to your cars!'),
+              err => {
+                console.log(err);
+                this.notificationsService.error('Something has gone wrong', 'Try again!');
+              },
+              () => this.progressService.done()
             );
         });
       });
+  }
+
+  addRating(): void {
+    this.progressService.start();
+    this.ratingService
+      .save({
+        id: null,
+        userId: this.authService.getCurrentUserId(),
+        versionId: this.selectedVersion.id,
+        comment: this.comment,
+        points: this.points,
+        date: new Date()
+      })
+      .subscribe(
+        rating => {
+          console.log(rating);
+          this.ratings.push(rating);
+          this.notificationsService.success('Added rating');
+        },
+        err => {
+          console.log(err);
+          this.notificationsService.error('Something has gone wrong', 'Try again!');
+        },
+        () => this.progressService.done());
+  }
+
+  prepareFuelConsumption(n: number): string {
+    return `${this.isDataProvided(n) ? n : 'No data'}`;
+  }
+
+  private isDataProvided(n: number): boolean {
+    return n && n != null && n !== 0;
   }
 
 }

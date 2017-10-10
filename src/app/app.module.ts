@@ -28,6 +28,7 @@ import {CarService} from "./service/car.service";
 import {BootstrapModalModule} from "ngx-modialog/plugins/bootstrap";
 import {ModalModule} from "ngx-modialog";
 import {ComparisonComponent} from './component/comparison/comparison.component';
+import {RatingService} from "./service/rating.service";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [UnauthGuard]},
@@ -78,6 +79,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ModelService,
     VersionService,
     CarService,
+    RatingService,
     AuthService,
     AuthGuard,
     UnauthGuard,
