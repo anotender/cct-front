@@ -14,6 +14,7 @@ import {NotificationsService} from "angular2-notifications/dist";
 import {Rating} from "../../model/rating";
 import {Observable} from "rxjs/Observable";
 import {RatingService} from "../../service/rating.service";
+import {StringUtils} from "../../util/string-utils";
 
 @Component({
   selector: 'app-car-info',
@@ -26,6 +27,7 @@ export class CarInfoComponent implements OnInit {
   selectedModel: Model = new Model();
   selectedVersion: Version = new Version();
   ratings: Rating[] = [];
+  averageRating: number;
   points: number;
   comment: string = '';
 
@@ -55,6 +57,7 @@ export class CarInfoComponent implements OnInit {
             res => {
               this.selectedMake = res[0];
               this.ratings = res[1];
+              this.averageRating = this.countAverageRating(this.ratings);
             },
             err => console.log(err),
             () => this.progressService.done()
@@ -106,8 +109,8 @@ export class CarInfoComponent implements OnInit {
       })
       .subscribe(
         rating => {
-          console.log(rating);
           this.ratings.push(rating);
+          this.averageRating = this.countAverageRating(this.ratings);
           this.notificationsService.success('Added rating');
         },
         err => {
@@ -117,12 +120,21 @@ export class CarInfoComponent implements OnInit {
         () => this.progressService.done());
   }
 
-  prepareFuelConsumption(n: number): string {
+  prepareNumberData(n: number): string {
     return `${this.isDataProvided(n) ? n : 'No data'}`;
+  }
+
+  prepareStringData(s: string): string {
+    return StringUtils.isNotEmpty(s) ? s : 'No data';
   }
 
   private isDataProvided(n: number): boolean {
     return n && n != null && n !== 0;
+  }
+
+  private countAverageRating(ratings: Rating[]): number {
+    let sum = ratings.map(r => r.points).reduce((a, b) => a + b, 0);
+    return sum / ratings.length;
   }
 
 }

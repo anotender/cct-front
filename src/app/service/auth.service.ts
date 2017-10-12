@@ -3,10 +3,8 @@ import {Http, Response} from "@angular/http";
 import {Router} from "@angular/router";
 import {AppComponent} from "../app.component";
 import {Credentials} from "../model/credentials";
-import {AuthHttp, tokenNotExpired} from "angular2-jwt";
+import {tokenNotExpired} from "angular2-jwt";
 import {Observable} from "rxjs/Observable";
-import {User} from "../model/user";
-import {UserService} from "./user.service";
 
 @Injectable()
 export class AuthService {

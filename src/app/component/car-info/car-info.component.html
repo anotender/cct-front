@@ -1,43 +1,57 @@
 <div class="col-md-4">
-  <div class="media">
-    <div class="media-left">
-      <img class="media-object" src="{{selectedMake.logoUrl}}" alt="logo">
-      <br>
-      <button class="btn btn-primary" (click)="addToMyCars()">Add to my cars</button>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="media">
+        <div class="media-left">
+          <img class="media-object" src="{{selectedMake.logoUrl}}" alt="logo">
+        </div>
+        <div class="media-body">
+          <h3 class="media-heading">
+            {{selectedMake.name + ' ' + selectedModel.name}}
+            <small>{{selectedVersion.name}}</small>
+          </h3>
+          <button class="btn btn-primary" (click)="addToMyCars()">Add to my cars</button>
+        </div>
+      </div>
     </div>
-    <div class="media-body">
-      <h3 class="media-heading">
-        {{selectedMake.name + ' ' + selectedModel.name}}
-        <small>{{selectedVersion.name}}</small>
-      </h3>
-      <table class="table table-bordered table-hover">
-        <tbody>
-        <tr>
-          <td>Years</td>
-          <td>{{selectedVersion.years}}</td>
-        </tr>
-        <tr>
-          <td>Body</td>
-          <td>{{selectedModel.body}}</td>
-        </tr>
-        <tr>
-          <td>Fuel</td>
-          <td>{{selectedVersion.fuel}}</td>
-        </tr>
-        <tr>
-          <td>City fuel consumption</td>
-          <td>{{prepareFuelConsumption(selectedVersion.cityFuelConsumption)}}</td>
-        </tr>
-        <tr>
-          <td>Highway fuel consumption</td>
-          <td>{{prepareFuelConsumption(selectedVersion.highwayFuelConsumption)}}</td>
-        </tr>
-        <tr>
-          <td>Mixed fuel consumption</td>
-          <td>{{prepareFuelConsumption(selectedVersion.mixedFuelConsumption)}}</td>
-        </tr>
-        </tbody>
-      </table>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <table class="table table-bordered table-hover">
+          <tbody>
+          <tr>
+            <td>Average rating</td>
+            <td>{{prepareNumberData(averageRating)}}</td>
+          </tr>
+          <tr>
+            <td>Years</td>
+            <td>{{selectedVersion.years}}</td>
+          </tr>
+          <tr>
+            <td>Body</td>
+            <td>{{selectedModel.body}}</td>
+          </tr>
+          <tr>
+            <td>Fuel</td>
+            <td>{{selectedVersion.fuel}}</td>
+          </tr>
+          <tr>
+            <td>City fuel consumption</td>
+            <td>{{prepareNumberData(selectedVersion.cityFuelConsumption)}}</td>
+          </tr>
+          <tr>
+            <td>Highway fuel consumption</td>
+            <td>{{prepareNumberData(selectedVersion.highwayFuelConsumption)}}</td>
+          </tr>
+          <tr>
+            <td>Mixed fuel consumption</td>
+            <td>{{prepareNumberData(selectedVersion.mixedFuelConsumption)}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -48,7 +62,10 @@
     </div>
     <ul class="list-group">
       <li class="list-group-item" *ngIf="ratings.length === 0">No ratings yet. Be the first one to rate this car!</li>
-      <li class="list-group-item" *ngFor="let r of ratings">{{r.comment}}</li>
+      <li class="list-group-item" *ngFor="let r of ratings">
+        <span class="badge">{{r.points}}</span>
+        {{prepareStringData(r.comment)}}
+      </li>
     </ul>
     <div class="panel-footer">
       <form (ngSubmit)="addRating()">
@@ -58,7 +75,7 @@
           </div>
         </div>
         <br>
-        <div class="row form-group">
+        <div class="row">
           <div class="col-md-6">
             <select name="points" class="form-control" [(ngModel)]="points">
               <option>1</option>

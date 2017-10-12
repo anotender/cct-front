@@ -29,7 +29,7 @@ export class VersionService {
 
   getVersionsOrderedByPopularity(limit: number): Observable<Version[]> {
     return this.authHttp
-      .get(this.VERSIONS_API_PREFIX + '?orderbypopularity=true&limit=' + limit)
+      .get(this.VERSIONS_API_PREFIX + '?search=orderByPopularity&limit=' + limit)
       .map(res => res.json())
       .catch(err => Observable.throw(err));
   }
