@@ -19,11 +19,13 @@ export class RatingService {
     let body = JSON.stringify(rating);
     return this.authHttp
       .post(this.RATINGS_API_PREFIX, body, this.OPTIONS)
-      .map(res => {
-        console.log(res.json());
-        return res.json();
-      })
+      .map(res => res.json())
       .catch(err => Observable.throw(err));
+  }
+
+  countAverageRating(ratings: Rating[]): number {
+    let sum: number = ratings.map(r => r.points).reduce((a, b) => a + b, 0);
+    return sum / ratings.length;
   }
 
 }

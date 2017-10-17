@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Make} from "../../model/make";
 import {Version} from "../../model/version";
@@ -13,8 +13,9 @@ import {CarService} from "../../service/car.service";
 import {NotificationsService} from "angular2-notifications/dist";
 import {Rating} from "../../model/rating";
 import {Observable} from "rxjs/Observable";
-import {RatingService} from "../../service/rating.service";
 import {StringUtils} from "../../util/string-utils";
+import {RatingFormComponent} from "../rating-form/rating-form.component";
+import {RatingService} from "../../service/rating.service";
 
 @Component({
   selector: 'app-car-info',
@@ -23,13 +24,14 @@ import {StringUtils} from "../../util/string-utils";
 })
 export class CarInfoComponent implements OnInit {
 
+  @ViewChild('ratingFormModal')
+  ratingFormModal: RatingFormComponent;
+
   selectedMake: Make = new Make();
   selectedModel: Model = new Model();
   selectedVersion: Version = new Version();
   ratings: Rating[] = [];
   averageRating: number;
-  points: number;
-  comment: string = '';
 
   constructor(private route: ActivatedRoute,
               private progressService: NgProgressService,
@@ -53,15 +55,15 @@ export class CarInfoComponent implements OnInit {
           Observable.forkJoin(
             this.makeService.getMake(model.makeId),
             this.versionService.getRatingsForVersion(params['id'])
-          ).subscribe(
-            res => {
-              this.selectedMake = res[0];
-              this.ratings = res[1];
-              this.averageRating = this.countAverageRating(this.ratings);
-            },
-            err => console.log(err),
-            () => this.progressService.done()
-          );
+          ).subscribe(res => {
+            this.selectedMake = res[0];
+            this.ratings = res[1];
+            this.averageRating = this.ratingService.countAverageRating(this.ratings);
+            this.progressService.done()
+          }, err => {
+            console.log(err);
+            this.progressService.done();
+          });
         });
       });
     });
@@ -75,66 +77,47 @@ export class CarInfoComponent implements OnInit {
       .placeholder('Car name')
       .open()
       .then(dialogRef => {
-        dialogRef.result.then(name => {
-          this.progressService.start();
-          this.carService
-            .save({
-              id: null,
-              name: name,
-              versionId: this.selectedVersion.id,
-              userId: this.authService.getCurrentUserId()
-            })
-            .subscribe(
-              res => this.notificationsService.success('Car "' + name + '" has just been added to your cars!'),
-              err => {
+          dialogRef.result.then(name => {
+            this.progressService.start();
+            this.carService
+              .save({
+                id: null,
+                name: name,
+                versionId: this.selectedVersion.id,
+                userId: this.authService.getCurrentUserId()
+              })
+              .subscribe(res => {
+                this.notificationsService.success('Car "' + name + '" has just been added to your cars!');
+                this.progressService.done();
+              }, err => {
                 console.log(err);
                 this.notificationsService.error('Something has gone wrong', 'Try again!');
-              },
-              () => this.progressService.done()
-            );
-        });
-      });
+                this.progressService.done();
+              });
+          });
+        }
+      );
   }
 
-  addRating(): void {
-    this.progressService.start();
-    this.ratingService
-      .save({
-        id: null,
-        userId: this.authService.getCurrentUserId(),
-        versionId: this.selectedVersion.id,
-        comment: this.comment,
-        points: this.points,
-        date: new Date()
-      })
-      .subscribe(
-        rating => {
-          this.ratings.push(rating);
-          this.averageRating = this.countAverageRating(this.ratings);
-          this.notificationsService.success('Added rating');
-        },
-        err => {
-          console.log(err);
-          this.notificationsService.error('Something has gone wrong', 'Try again!');
-        },
-        () => this.progressService.done());
+  handleRatingSaved(rating: Rating): void {
+    this.ratings.push(rating);
+    this.averageRating = this.ratingService.countAverageRating(this.ratings);
   }
 
   prepareNumberData(n: number): string {
-    return `${this.isDataProvided(n) ? n : 'No data'}`;
+    return `${this.isDataProvided(n) ? Number(n).toFixed(2) : 'No data'}`;
   }
 
   prepareStringData(s: string): string {
-    return StringUtils.isNotEmpty(s) ? s : 'No data';
+    return StringUtils.isNotEmpty(s) ? s : 'No comment';
+  }
+
+  prepareDate(millis: number): string {
+    return new Date(millis).toLocaleDateString();
   }
 
   private isDataProvided(n: number): boolean {
     return n && n != null && n !== 0;
-  }
-
-  private countAverageRating(ratings: Rating[]): number {
-    let sum = ratings.map(r => r.points).reduce((a, b) => a + b, 0);
-    return sum / ratings.length;
   }
 
 }

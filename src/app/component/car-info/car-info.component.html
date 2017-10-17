@@ -58,38 +58,32 @@
 <div class="col-md-4">
   <div class="panel panel-default">
     <div class="panel-heading">
-      Ratings
-    </div>
-    <ul class="list-group">
-      <li class="list-group-item" *ngIf="ratings.length === 0">No ratings yet. Be the first one to rate this car!</li>
-      <li class="list-group-item" *ngFor="let r of ratings">
-        <span class="badge">{{r.points}}</span>
-        {{prepareStringData(r.comment)}}
-      </li>
-    </ul>
-    <div class="panel-footer">
-      <form (ngSubmit)="addRating()">
-        <div class="row">
-          <div class="col-md-12">
-            <textarea class="form-control" placeholder="Comment" name="comment" [(ngModel)]="comment"></textarea>
-          </div>
+      <div class="row">
+        <div class="pull-left" style="margin-left: 10px">
+          Ratings
         </div>
-        <br>
-        <div class="row">
-          <div class="col-md-6">
-            <select name="points" class="form-control" [(ngModel)]="points">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <button type="submit" class="btn btn-primary btn-block">Save</button>
-          </div>
+        <div class="pull-right" style="margin-right: 10px">
+          <button class="btn btn-primary" (click)="ratingFormModal.open()">
+            Add rating
+          </button>
         </div>
-      </form>
+      </div>
     </div>
+    <table class="table table-hover">
+      <tr *ngIf="ratings.length === 0">
+        <td>No ratings yet. Be the first one to rate this car!</td>
+      </tr>
+      <tr *ngFor="let r of ratings">
+        <td>{{prepareStringData(r.comment)}}</td>
+        <td>
+          {{r.points}}
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </td>
+        <td>{{prepareDate(r.date)}}</td>
+      </tr>
+    </table>
   </div>
 </div>
+
+<app-rating-form #ratingFormModal [versionId]="selectedVersion.id"
+                 (ratingSaved)="handleRatingSaved($event)"></app-rating-form>

@@ -29,6 +29,8 @@ import {BootstrapModalModule} from "ngx-modialog/plugins/bootstrap";
 import {ModalModule} from "ngx-modialog";
 import {ComparisonComponent} from './component/comparison/comparison.component';
 import {RatingService} from "./service/rating.service";
+import {BsModalModule} from "ng2-bs3-modal";
+import {RatingFormComponent} from './component/rating-form/rating-form.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [UnauthGuard]},
@@ -59,7 +61,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     MakeFilterPipe,
     ModelFilterPipe,
     CarInfoComponent,
-    ComparisonComponent
+    ComparisonComponent,
+    RatingFormComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -71,7 +74,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     NgProgressModule,
     ModalModule.forRoot(),
-    BootstrapModalModule
+    BootstrapModalModule,
+    BsModalModule
   ],
   providers: [
     UserService,

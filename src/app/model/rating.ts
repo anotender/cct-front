@@ -2,7 +2,7 @@ export class Rating {
   id: number;
   points: number;
   comment: string = '';
-  date: Date = new Date();
+  date: number;
   versionId: string = '';
   userId: number;
 }
