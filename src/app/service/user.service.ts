@@ -4,11 +4,12 @@ import {AppComponent} from "../app.component";
 import {User} from "../model/user";
 import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
+import {AppConfig} from "../config/app.config";
 
 @Injectable()
 export class UserService {
 
-  private USERS_API_PREFIX = AppComponent.API_PREFIX + '/users';
+  private USERS_API_PREFIX = AppConfig.API_PREFIX + '/users';
   private HEADERS = new Headers({'Content-Type': 'application/json'});
   private OPTIONS = new RequestOptions({headers: this.HEADERS});
 

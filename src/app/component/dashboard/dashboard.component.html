@@ -4,7 +4,7 @@
       <h3 class="panel-title">The most popular cars</h3>
     </div>
     <div class="panel-body">
-      <table class="table cars-table">
+      <table class="table table-tiles">
         <tbody>
         <tr class="table-tile link" *ngFor="let object of popularVersions" (click)="showCarInfo(object.version.id)">
           <td>
@@ -46,7 +46,7 @@
         </div>
         <div class="col-md-6">
           <div class="link tile jumbotron" (click)="showFuelStations()">
-            Nearest fuel stations
+            Fuel stations map
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@
       <h3 class="panel-title">Average fuel prices</h3>
     </div>
     <div class="panel-body">
-      <table class="table cars-table">
+      <table class="table table-tiles">
         <tbody>
         <tr>
           <td class="table-tile diesel-tile" align="center">

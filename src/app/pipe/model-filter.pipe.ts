@@ -1,6 +1,6 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {Make} from "../model/make";
-import {StringUtils} from "../util/string-utils";
+import {StringUtils} from "../util/string.utils";
 import {Model} from "../model/model";
 
 @Pipe({

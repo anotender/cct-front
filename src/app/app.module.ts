@@ -31,6 +31,10 @@ import {ComparisonComponent} from './component/comparison/comparison.component';
 import {RatingService} from "./service/rating.service";
 import {BsModalModule} from "ng2-bs3-modal";
 import {RatingFormComponent} from './component/rating-form/rating-form.component';
+import {AgmCoreModule} from '@agm/core';
+import {FuelStationsMapComponent} from './component/fuel-stations-map/fuel-stations-map.component';
+import {AppConfig} from "./config/app.config";
+import {FuelStationService} from "./service/fuel-station.service";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [UnauthGuard]},
@@ -39,6 +43,7 @@ const appRoutes: Routes = [
   {path: 'compare', component: ComparisonComponent, canActivate: [AuthGuard]},
   {path: 'cars', component: CarListComponent, canActivate: [AuthGuard]},
   {path: 'cars/:id', component: CarInfoComponent, canActivate: [AuthGuard]},
+  {path: 'fuel-stations-map', component: FuelStationsMapComponent, canActivate: [AuthGuard]},
   {path: '**', component: DashboardComponent, canActivate: [AuthGuard]}
 ];
 
@@ -62,7 +67,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ModelFilterPipe,
     CarInfoComponent,
     ComparisonComponent,
-    RatingFormComponent
+    RatingFormComponent,
+    FuelStationsMapComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -75,7 +81,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     NgProgressModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-    BsModalModule
+    BsModalModule,
+    AgmCoreModule.forRoot({
+      apiKey: AppConfig.GOOGLE_API_KEY
+    })
   ],
   providers: [
     UserService,
@@ -84,6 +93,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     VersionService,
     CarService,
     RatingService,
+    FuelStationService,
     AuthService,
     AuthGuard,
     UnauthGuard,

@@ -30,28 +30,42 @@ export class DashboardComponent implements OnInit {
     this.versionService
       .getVersionsOrderedByPopularity(5)
       .subscribe(versions => {
-          let modelIds: string[] = Array.from(new Set(versions.map(version => version.modelId)));
-          Observable
-            .forkJoin(modelIds.map(modelId => this.modelService.getModel(modelId)))
-            .subscribe(models => {
-              let makeIds: string[] = Array.from(new Set(models.map(model => model.makeId)));
-              Observable
-                .forkJoin(makeIds.map(makeId => this.makeService.getMake(makeId)))
-                .subscribe(makes => {
-                  versions.forEach(version => {
-                    let model: Model = models.find(model => model.id === version.modelId);
-                    let make: Make = makes.find(make => make.id === model.makeId);
-                    this.popularVersions.push({
-                      version: version,
-                      model: model,
-                      make: make
-                    });
-                  });
-                  this.progressService.done();
-                });
-            });
+        let modelIds: string[] = Array.from(new Set(versions.filter(v => v.cars.length !== 0).map(version => version.modelId)));
+
+        if (modelIds.length === 0) {
+          this.progressService.done();
+          return;
         }
-      );
+
+        Observable
+          .forkJoin(modelIds.map(modelId => this.modelService.getModel(modelId)))
+          .subscribe(models => {
+            let makeIds: string[] = Array.from(new Set(models.map(model => model.makeId)));
+            Observable
+              .forkJoin(makeIds.map(makeId => this.makeService.getMake(makeId)))
+              .subscribe(makes => {
+                versions.forEach(version => {
+                  let model: Model = models.find(model => model.id === version.modelId);
+                  let make: Make = makes.find(make => make.id === model.makeId);
+                  this.popularVersions.push({
+                    version: version,
+                    model: model,
+                    make: make
+                  });
+                });
+                this.progressService.done();
+              }, err => {
+                console.log(err);
+                this.progressService.done();
+              });
+          }, err => {
+            console.log(err);
+            this.progressService.done();
+          });
+      }, err => {
+        console.log(err);
+        this.progressService.done();
+      });
   }
 
   showCars(): void {
@@ -67,7 +81,7 @@ export class DashboardComponent implements OnInit {
   }
 
   showFuelStations(): void {
-    this.router.navigateByUrl('/fuelstations');
+    this.router.navigateByUrl('/fuel-stations-map');
   }
 
 }

@@ -8,8 +8,6 @@ import {NgProgressService} from "ngx-progressbar";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public static API_PREFIX = 'http://localhost:8080/api';
-
   notificationsOptions = {
     timeOut: 2000,
     pauseOnHover: false,

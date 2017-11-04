@@ -4,11 +4,12 @@ import {AppComponent} from "../app.component";
 import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
 import {Rating} from "../model/rating";
+import {AppConfig} from "../config/app.config";
 
 @Injectable()
 export class RatingService {
 
-  private RATINGS_API_PREFIX = AppComponent.API_PREFIX + '/ratings';
+  private RATINGS_API_PREFIX = AppConfig.API_PREFIX + '/ratings';
   private HEADERS = new Headers({'Content-Type': 'application/json'});
   private OPTIONS = new RequestOptions({headers: this.HEADERS});
 

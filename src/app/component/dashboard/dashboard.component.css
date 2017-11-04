@@ -10,19 +10,6 @@
   background-color: #18bc9c;
 }
 
-.cars-table {
-  border-collapse: separate;
-  border-spacing: 0 1em;
-}
-
-.table-tile {
-  transition: all 0.5s ease;
-}
-
-.table-tile:hover {
-  background-color: #18bc9c;
-}
-
 .table-tile.diesel-tile:hover {
   background-color: gray;
 }

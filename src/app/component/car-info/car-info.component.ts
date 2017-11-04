@@ -13,7 +13,7 @@ import {CarService} from "../../service/car.service";
 import {NotificationsService} from "angular2-notifications/dist";
 import {Rating} from "../../model/rating";
 import {Observable} from "rxjs/Observable";
-import {StringUtils} from "../../util/string-utils";
+import {StringUtils} from "../../util/string.utils";
 import {RatingFormComponent} from "../rating-form/rating-form.component";
 import {RatingService} from "../../service/rating.service";
 

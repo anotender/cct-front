@@ -4,11 +4,12 @@ import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
 import {Make} from "../model/make";
 import {Model} from "../model/model";
+import {AppConfig} from "../config/app.config";
 
 @Injectable()
 export class MakeService {
 
-  private MAKES_API_PREFIX = AppComponent.API_PREFIX + '/makes';
+  private MAKES_API_PREFIX = AppConfig.API_PREFIX + '/makes';
   private makes: Make[] = [];
 
   constructor(private authHttp: AuthHttp) {

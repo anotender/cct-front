@@ -1,14 +1,14 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Router} from "@angular/router";
-import {AppComponent} from "../app.component";
 import {Credentials} from "../model/credentials";
 import {tokenNotExpired} from "angular2-jwt";
 import {Observable} from "rxjs/Observable";
+import {AppConfig} from "../config/app.config";
 
 @Injectable()
 export class AuthService {
-  private LOGIN_URI = AppComponent.API_PREFIX + '/login';
+  private LOGIN_URI = AppConfig.API_PREFIX + '/login';
 
   constructor(private http: Http, private router: Router) {
   }

@@ -103,6 +103,10 @@ export class ComparisonComponent implements OnInit {
       });
   }
 
+  removeFromComparison(c: any): void {
+    this.carsToCompare = this.carsToCompare.filter(value => value !== c);
+  }
+
   showCarInfo(id: string): void {
     this.router.navigate(['/cars', id]);
   }

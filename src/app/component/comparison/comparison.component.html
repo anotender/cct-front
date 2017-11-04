@@ -34,6 +34,7 @@
               <a class="link" (click)="showCarInfo(c.version.id)">
                 {{c.make.name + ' ' + c.model.name + ' ' + c.version.name}}
               </a>
+              <span class="close" aria-label="close" (click)="removeFromComparison(c)">&times;</span>
             </th>
           </tr>
           </thead>

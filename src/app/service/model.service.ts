@@ -4,11 +4,12 @@ import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
 import {Version} from "../model/version";
 import {Model} from "../model/model";
+import {AppConfig} from "../config/app.config";
 
 @Injectable()
 export class ModelService {
 
-  private MODELS_API_PREFIX = AppComponent.API_PREFIX + '/models';
+  private MODELS_API_PREFIX = AppConfig.API_PREFIX + '/models';
 
   constructor(private authHttp: AuthHttp) {
   }
