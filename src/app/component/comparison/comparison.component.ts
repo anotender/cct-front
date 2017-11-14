@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Make} from "../../model/make";
 import {MakeService} from "../../service/make.service";
-import {NgProgressService} from "ngx-progressbar";
+import {NgProgress} from "ngx-progressbar";
 import {Model} from "../../model/model";
 import {Version} from "../../model/version";
 import {ModelService} from "../../service/model.service";
@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 import {VersionService} from "../../service/version.service";
 import {RatingService} from "../../service/rating.service";
 import {Observable} from "rxjs/Observable";
+import {CustomErrorHandler} from "../../config/error.handler";
 
 @Component({
   selector: 'app-comparison',
@@ -29,25 +30,23 @@ export class ComparisonComponent implements OnInit {
               private modelService: ModelService,
               private versionService: VersionService,
               private ratingService: RatingService,
-              private progressService: NgProgressService,
+              private errorHandler: CustomErrorHandler,
+              private progress: NgProgress,
               private router: Router) {
   }
 
   ngOnInit() {
-    this.progressService.start();
+    this.progress.start();
     this.makeService
       .getMakes()
       .subscribe(makes => {
         this.makes = makes;
-        this.progressService.done();
-      }, err => {
-        console.log(err);
-        this.progressService.done();
+        this.progress.done();
       });
   }
 
   addToComparison(): void {
-    this.progressService.start();
+    this.progress.start();
     Observable
       .forkJoin(
         this.versionService.getVersion(this.selectedVersion.id),
@@ -62,14 +61,15 @@ export class ComparisonComponent implements OnInit {
           'averageRating': this.ratingService.countAverageRating(res[1])
         });
         this.finishAdding();
+        this.progress.done();
       }, err => {
-        console.log(err);
+        this.errorHandler.handleError(err);
         this.finishAdding();
       });
   }
 
   onMakeChange(make: Make): void {
-    this.progressService.start();
+    this.progress.start();
     this.selectedMake = make;
     this.selectedModel = null;
     this.selectedVersion = null;
@@ -78,17 +78,13 @@ export class ComparisonComponent implements OnInit {
     this.makeService
       .getModelsForMake(make.id)
       .subscribe(models => {
-          this.models = models;
-          this.progressService.done();
-        }, err => {
-          console.log(err);
-          this.progressService.done();
-        }
-      );
+        this.models = models;
+        this.progress.done();
+      });
   }
 
   onModelChange(model: Model): void {
-    this.progressService.start();
+    this.progress.start();
     this.selectedModel = model;
     this.selectedVersion = null;
     this.versions.length = 0;
@@ -96,10 +92,7 @@ export class ComparisonComponent implements OnInit {
       .getVersionsForModel(model.id)
       .subscribe(versions => {
         this.versions = versions;
-        this.progressService.done();
-      }, err => {
-        console.log(err);
-        this.progressService.done();
+        this.progress.done();
       });
   }
 
@@ -125,7 +118,7 @@ export class ComparisonComponent implements OnInit {
     this.selectedVersion = null;
     this.models.length = 0;
     this.versions.length = 0;
-    this.progressService.done();
+    this.progress.done();
   }
 
 }

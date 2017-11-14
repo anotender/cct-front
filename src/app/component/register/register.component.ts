@@ -4,8 +4,9 @@ import {UserService} from "../../service/user.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {matchOtherValidator} from "@moebius/ng-validators";
 import {Router} from "@angular/router";
-import {NotificationsService} from "angular2-notifications/dist";
-import {NgProgressService} from "ngx-progressbar";
+import {NgProgress} from "ngx-progressbar";
+import {ToastrService} from "ngx-toastr";
+import {CustomErrorHandler} from "../../config/error.handler";
 
 @Component({
   selector: 'app-register',
@@ -21,9 +22,10 @@ export class RegisterComponent implements OnInit {
   registerButtonDisabled: boolean = false;
 
   constructor(private userService: UserService,
-              private notificationsService: NotificationsService,
+              private toastr: ToastrService,
+              private errorHandler: CustomErrorHandler,
               private fb: FormBuilder,
-              private progressService: NgProgressService,
+              private progress: NgProgress,
               private router: Router) {
   }
 
@@ -40,7 +42,7 @@ export class RegisterComponent implements OnInit {
 
   register(value): void {
     this.registerButtonDisabled = true;
-    this.progressService.start();
+    this.progress.start();
 
     let user: User = new User();
     user.email = value.email;
@@ -48,19 +50,15 @@ export class RegisterComponent implements OnInit {
 
     this.userService
       .save(user)
-      .subscribe(
-        res => {
-          this.progressService.done();
-          this.registerButtonDisabled = false;
-          this.notificationsService.success('User ' + value.email + ' created!', 'You can now sign in');
-          this.router.navigateByUrl('/login');
-        },
-        err => {
-          this.progressService.done();
-          this.registerButtonDisabled = false;
-          this.notificationsService.error('Cannot create user ' + value.email)
-        }
-      );
+      .subscribe(res => {
+        this.progress.done();
+        this.registerButtonDisabled = false;
+        this.toastr.success('User ' + value.email + ' created!', 'You can now sign in');
+        this.router.navigateByUrl('/login');
+      }, err => {
+        this.registerButtonDisabled = false;
+        this.errorHandler.handleError(err, 'Cannot create user ' + value.email)
+      });
   }
 
 }

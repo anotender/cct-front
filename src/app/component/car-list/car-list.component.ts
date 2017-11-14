@@ -4,7 +4,7 @@ import {Make} from "../../model/make";
 import {Model} from "../../model/model";
 import {ModelService} from "../../service/model.service";
 import {Version} from "../../model/version";
-import {NgProgressService} from "ngx-progressbar";
+import {NgProgress} from "ngx-progressbar";
 import {Router} from "@angular/router";
 
 @Component({
@@ -24,24 +24,24 @@ export class CarListComponent implements OnInit {
 
   constructor(private makeService: MakeService,
               private modelService: ModelService,
-              private progressService: NgProgressService,
+              private progress: NgProgress,
               private router: Router) {
   }
 
   ngOnInit() {
-    this.progressService.start();
+    this.progress.start();
     this.makeService
       .getMakes()
       .subscribe(data => {
         this.makes = data;
-        this.progressService.done();
+        this.progress.done();
       });
   }
 
   selectMake(make: Make): void {
     if (make === this.selectedMake) return;
 
-    this.progressService.start();
+    this.progress.start();
     this.selectedMake = make;
     this.selectedModel = null;
     this.modelFilterString = '';
@@ -51,21 +51,21 @@ export class CarListComponent implements OnInit {
       .getModelsForMake(make.id)
       .subscribe(data => {
         this.models = data;
-        this.progressService.done();
+        this.progress.done();
       });
   }
 
   selectModel(model: Model): void {
     if (model === this.selectedModel) return;
 
-    this.progressService.start();
+    this.progress.start();
     this.selectedModel = model;
     this.versions = {};
     this.modelService
       .getVersionsForModel(model.id)
       .subscribe(data => {
         this.versions = this.groupVersions(data);
-        this.progressService.done();
+        this.progress.done();
       });
   }
 

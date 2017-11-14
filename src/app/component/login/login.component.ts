@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {NgProgressService} from "ngx-progressbar";
-import {NotificationsService} from "angular2-notifications/dist";
+import {NgProgress} from "ngx-progressbar";
 import {UserService} from "../../service/user.service";
+import {CustomErrorHandler} from "../../config/error.handler";
 
 @Component({
   selector: 'app-login',
@@ -22,8 +22,8 @@ export class LoginComponent implements OnInit {
               private authService: AuthService,
               private router: Router,
               private fb: FormBuilder,
-              private notificationsService: NotificationsService,
-              private progressService: NgProgressService) {
+              private progress: NgProgress,
+              private errorHandler: CustomErrorHandler) {
   }
 
   ngOnInit(): void {
@@ -36,38 +36,28 @@ export class LoginComponent implements OnInit {
   }
 
   login(value): void {
-    this.progressService.start();
+    this.progress.start();
     this.loginButtonDisabled = true;
     this.authService
       .login({
         username: value.email,
         password: value.password
       })
-      .subscribe(
-        response => {
-          localStorage.setItem('token', response.headers.get('Authorization'));
-          localStorage.setItem('email', value.email);
-          this.userService
-            .getUserByEmail(value.email)
-            .subscribe(
-              user => {
-                localStorage.setItem('id', user.id.toString());
-                this.router.navigateByUrl('/dashboard');
-              },
-              err => console.log(err),
-              () => {
-                this.progressService.done();
-                this.loginButtonDisabled = false;
-              }
-            );
-        },
-        error => {
-          console.log(error);
-          this.notificationsService.error('Incorrect username or password');
-          this.progressService.done();
-          this.loginButtonDisabled = false;
-        }
-      );
+      .subscribe(response => {
+        localStorage.setItem('token', response.headers.get('Authorization'));
+        localStorage.setItem('email', value.email);
+        this.userService
+          .getUserByEmail(value.email)
+          .subscribe(user => {
+            localStorage.setItem('id', user.id.toString());
+            this.router.navigateByUrl('/dashboard');
+            this.progress.done();
+            this.loginButtonDisabled = false;
+          });
+      }, err => {
+        this.errorHandler.handleError(err);
+        this.loginButtonDisabled = false;
+      });
   }
 
   register(): void {

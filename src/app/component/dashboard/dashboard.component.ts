@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {NgProgressService} from "ngx-progressbar";
-import {Version} from "../../model/version";
+import {NgProgress} from "ngx-progressbar";
 import {VersionService} from "../../service/version.service";
 import {ModelService} from "../../service/model.service";
 import {MakeService} from "../../service/make.service";
@@ -19,21 +18,21 @@ export class DashboardComponent implements OnInit {
   popularVersions: any[] = [];
 
   constructor(private router: Router,
-              private progressService: NgProgressService,
+              private progress: NgProgress,
               private versionService: VersionService,
               private modelService: ModelService,
               private makeService: MakeService) {
   }
 
   ngOnInit(): void {
-    this.progressService.start();
+    this.progress.start();
     this.versionService
       .getVersionsOrderedByPopularity(5)
       .subscribe(versions => {
         let modelIds: string[] = Array.from(new Set(versions.filter(v => v.cars.length !== 0).map(version => version.modelId)));
 
         if (modelIds.length === 0) {
-          this.progressService.done();
+          this.progress.done();
           return;
         }
 
@@ -53,18 +52,9 @@ export class DashboardComponent implements OnInit {
                     make: make
                   });
                 });
-                this.progressService.done();
-              }, err => {
-                console.log(err);
-                this.progressService.done();
+                this.progress.done();
               });
-          }, err => {
-            console.log(err);
-            this.progressService.done();
           });
-      }, err => {
-        console.log(err);
-        this.progressService.done();
       });
   }
 

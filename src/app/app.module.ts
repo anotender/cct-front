@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import {Http, HttpModule, RequestOptions} from "@angular/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -13,7 +13,6 @@ import {DashboardComponent} from './component/dashboard/dashboard.component';
 import {AuthService} from "./service/auth.service";
 import {AuthConfig, AuthHttp} from "angular2-jwt";
 import {UserService} from "./service/user.service";
-import {SimpleNotificationsModule} from "angular2-notifications";
 import {AuthGuard} from "./guard/auth.guard";
 import {CarListComponent} from './component/car-list/car-list.component';
 import {MakeService} from "./service/make.service";
@@ -35,6 +34,8 @@ import {AgmCoreModule} from '@agm/core';
 import {FuelStationsMapComponent} from './component/fuel-stations-map/fuel-stations-map.component';
 import {AppConfig} from "./config/app.config";
 import {FuelStationService} from "./service/fuel-station.service";
+import {ToastrModule} from "ngx-toastr";
+import {CustomErrorHandler} from "./config/error.handler";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [UnauthGuard]},
@@ -74,7 +75,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RouterModule.forRoot(appRoutes),
     BrowserModule,
     BrowserAnimationsModule,
-    SimpleNotificationsModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
@@ -84,6 +84,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BsModalModule,
     AgmCoreModule.forRoot({
       apiKey: AppConfig.GOOGLE_API_KEY
+    }),
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true
     })
   ],
   providers: [
@@ -97,6 +102,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AuthService,
     AuthGuard,
     UnauthGuard,
+    CustomErrorHandler,
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandler
+    },
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,

@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {RatingService} from "../../service/rating.service";
 import {BsModalComponent} from "ng2-bs3-modal";
-import {NgProgressService} from "ngx-progressbar";
-import {NotificationsService} from "angular2-notifications/dist";
+import {NgProgress} from "ngx-progressbar";
 import {AuthService} from "../../service/auth.service";
 import {Rating} from "../../model/rating";
+import {ToastrService} from "ngx-toastr";
+import {CustomErrorHandler} from "../../config/error.handler";
 
 @Component({
   selector: 'app-rating-form',
@@ -24,12 +25,13 @@ export class RatingFormComponent {
 
   constructor(private ratingService: RatingService,
               private authService: AuthService,
-              private progressService: NgProgressService,
-              private notificationsService: NotificationsService) {
+              private errorHandler: CustomErrorHandler,
+              private progress: NgProgress,
+              private toastr: ToastrService) {
   }
 
   submitRatingForm(): void {
-    this.progressService.start();
+    this.progress.start();
     this.ratingService
       .save({
         id: null,
@@ -41,11 +43,11 @@ export class RatingFormComponent {
       })
       .subscribe(rating => {
         this.ratingSaved.emit(rating);
-        this.notificationsService.success('Added rating');
+        this.toastr.success('Added rating');
+        this.progress.done();
         this.close();
       }, err => {
-        console.log(err);
-        this.notificationsService.error('Something went wrong', 'Try again!');
+        this.errorHandler.handleError(err, 'Something went wrong');
         this.close();
       });
   }
@@ -55,7 +57,7 @@ export class RatingFormComponent {
   }
 
   private close(): void {
-    this.progressService.done();
+    this.progress.done();
     this.modal.close();
     this.points = null;
     this.comment = null;

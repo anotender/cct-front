@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationStart, Router} from "@angular/router";
-import {NgProgressService} from "ngx-progressbar";
+import {NgProgress} from "ngx-progressbar";
 
 @Component({
   selector: 'app-root',
@@ -8,21 +8,16 @@ import {NgProgressService} from "ngx-progressbar";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  notificationsOptions = {
-    timeOut: 2000,
-    pauseOnHover: false,
-    showProgressBar: false
-  };
 
-  constructor(private router: Router, private progressService: NgProgressService) {
+  constructor(private router: Router, private progress: NgProgress) {
   }
 
   ngOnInit(): void {
     this.router.events.forEach(event => {
       if (event instanceof NavigationStart) {
-        this.progressService.start();
+        this.progress.start();
       } else {
-        this.progressService.done();
+        this.progress.done();
       }
     });
   }

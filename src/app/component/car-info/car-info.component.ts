@@ -3,19 +3,19 @@ import {ActivatedRoute} from "@angular/router";
 import {Make} from "../../model/make";
 import {Version} from "../../model/version";
 import {Model} from "../../model/model";
-import {NgProgressService} from "ngx-progressbar";
+import {NgProgress} from "ngx-progressbar";
 import {VersionService} from "../../service/version.service";
 import {ModelService} from "../../service/model.service";
 import {MakeService} from "../../service/make.service";
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {AuthService} from "../../service/auth.service";
 import {CarService} from "../../service/car.service";
-import {NotificationsService} from "angular2-notifications/dist";
 import {Rating} from "../../model/rating";
 import {Observable} from "rxjs/Observable";
 import {StringUtils} from "../../util/string.utils";
 import {RatingFormComponent} from "../rating-form/rating-form.component";
 import {RatingService} from "../../service/rating.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-car-info',
@@ -34,19 +34,19 @@ export class CarInfoComponent implements OnInit {
   averageRating: number;
 
   constructor(private route: ActivatedRoute,
-              private progressService: NgProgressService,
+              private progress: NgProgress,
               private versionService: VersionService,
               private modelService: ModelService,
               private makeService: MakeService,
               private authService: AuthService,
               private carService: CarService,
               private ratingService: RatingService,
-              private notificationsService: NotificationsService,
-              private modal: Modal) {
+              private modal: Modal,
+              private toastr: ToastrService) {
   }
 
   ngOnInit() {
-    this.progressService.start();
+    this.progress.start();
     this.route.params.subscribe(params => {
       this.versionService.getVersion(params['id']).subscribe(version => {
         this.selectedVersion = version;
@@ -59,10 +59,7 @@ export class CarInfoComponent implements OnInit {
             this.selectedMake = res[0];
             this.ratings = res[1];
             this.averageRating = this.ratingService.countAverageRating(this.ratings);
-            this.progressService.done()
-          }, err => {
-            console.log(err);
-            this.progressService.done();
+            this.progress.done()
           });
         });
       });
@@ -78,7 +75,7 @@ export class CarInfoComponent implements OnInit {
       .open()
       .then(dialogRef => {
           dialogRef.result.then(name => {
-            this.progressService.start();
+            this.progress.start();
             this.carService
               .save({
                 id: null,
@@ -87,12 +84,8 @@ export class CarInfoComponent implements OnInit {
                 userId: this.authService.getCurrentUserId()
               })
               .subscribe(res => {
-                this.notificationsService.success('Car "' + name + '" has just been added to your cars!');
-                this.progressService.done();
-              }, err => {
-                console.log(err);
-                this.notificationsService.error('Something has gone wrong', 'Try again!');
-                this.progressService.done();
+                this.toastr.success('Car "' + name + '" has just been added to your cars!');
+                this.progress.done();
               });
           });
         }
