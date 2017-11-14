@@ -36,12 +36,14 @@ import {AppConfig} from "./config/app.config";
 import {FuelStationService} from "./service/fuel-station.service";
 import {ToastrModule} from "ngx-toastr";
 import {CustomErrorHandler} from "./config/error.handler";
+import {UserCarsComponent} from './component/user-cars/user-cars.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [UnauthGuard]},
   {path: 'register', component: RegisterComponent, canActivate: [UnauthGuard]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'compare', component: ComparisonComponent, canActivate: [AuthGuard]},
+  {path: 'users/:id/cars', component: UserCarsComponent, canActivate: [AuthGuard]},
   {path: 'cars', component: CarListComponent, canActivate: [AuthGuard]},
   {path: 'cars/:id', component: CarInfoComponent, canActivate: [AuthGuard]},
   {path: 'fuel-stations-map', component: FuelStationsMapComponent, canActivate: [AuthGuard]},
@@ -69,7 +71,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CarInfoComponent,
     ComparisonComponent,
     RatingFormComponent,
-    FuelStationsMapComponent
+    FuelStationsMapComponent,
+    UserCarsComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

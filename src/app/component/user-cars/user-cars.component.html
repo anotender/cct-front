@@ -1,0 +1,25 @@
+<div class="col-md-3">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Your cars</h3>
+    </div>
+    <div class="panel-body">
+      <table class="table table-tiles">
+        <tbody>
+        <tr class="table-tile link" *ngFor="let object of cars" (click)="showCarInfo(object.version.id)">
+          <td>
+            <img class="logo" src="{{object.make.logoUrl}}" alt="{{object.make.name}}"/>
+          </td>
+          <td>
+            <h4>
+              {{object.model.name}}
+              <small>{{object.version.name}}</small>
+            </h4>
+          </td>
+          <td>{{object.version.cars.length}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,4 @@
 import {Injectable} from "@angular/core";
-import {AppComponent} from "../app.component";
 import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
 import {Version} from "../model/version";
@@ -17,6 +16,13 @@ export class ModelService {
   getModel(modelId: string): Observable<Model> {
     return this.authHttp
       .get(this.MODELS_API_PREFIX + '/' + modelId)
+      .map(res => res.json())
+      .catch(err => Observable.throw(err));
+  }
+
+  getModelsForIds(ids: string[]): Observable<Model[]> {
+    return this.authHttp
+      .get(this.MODELS_API_PREFIX + '?id=' + ids.join())
       .map(res => res.json())
       .catch(err => Observable.throw(err));
   }

@@ -7,6 +7,7 @@ import {MakeService} from "../../service/make.service";
 import {Observable} from "rxjs/Observable";
 import {Model} from "../../model/model";
 import {Make} from "../../model/make";
+import {AuthService} from "../../service/auth.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +22,8 @@ export class DashboardComponent implements OnInit {
               private progress: NgProgress,
               private versionService: VersionService,
               private modelService: ModelService,
-              private makeService: MakeService) {
+              private makeService: MakeService,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -29,7 +31,9 @@ export class DashboardComponent implements OnInit {
     this.versionService
       .getVersionsOrderedByPopularity(5)
       .subscribe(versions => {
-        let modelIds: string[] = Array.from(new Set(versions.filter(v => v.cars.length !== 0).map(version => version.modelId)));
+        let modelIds: string[] = versions
+          .filter(v => v.cars.length !== 0)
+          .map(version => version.modelId);
 
         if (modelIds.length === 0) {
           this.progress.done();
@@ -37,29 +41,33 @@ export class DashboardComponent implements OnInit {
         }
 
         Observable
-          .forkJoin(modelIds.map(modelId => this.modelService.getModel(modelId)))
-          .subscribe(models => {
-            let makeIds: string[] = Array.from(new Set(models.map(model => model.makeId)));
-            Observable
-              .forkJoin(makeIds.map(makeId => this.makeService.getMake(makeId)))
-              .subscribe(makes => {
-                versions.forEach(version => {
-                  let model: Model = models.find(model => model.id === version.modelId);
-                  let make: Make = makes.find(make => make.id === model.makeId);
-                  this.popularVersions.push({
-                    version: version,
-                    model: model,
-                    make: make
-                  });
-                });
-                this.progress.done();
-              });
+          .forkJoin(
+            this.modelService.getModelsForIds(modelIds),
+            this.makeService.getMakes()
+          )
+          .subscribe(res => {
+            let models: Model[] = res[0];
+            let makes: Make[] = res[1];
+            this.popularVersions = versions.map(version => {
+              let model: Model = models.find(model => model.id === version.modelId);
+              let make: Make = makes.find(make => make.id === model.makeId);
+              return {
+                version: version,
+                model: model,
+                make: make
+              };
+            });
+            this.progress.done();
           });
       });
   }
 
   showCars(): void {
     this.router.navigateByUrl('/cars');
+  }
+
+  showUserCars(): void {
+    this.router.navigateByUrl('/users/' + this.authService.getCurrentUserId() + '/cars');
   }
 
   showCarsComparison(): void {

@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
 import {Headers, Http, RequestOptions} from "@angular/http";
-import {AppComponent} from "../app.component";
 import {User} from "../model/user";
 import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
 import {AppConfig} from "../config/app.config";
+import {Car} from "../model/car";
 
 @Injectable()
 export class UserService {
@@ -14,6 +14,13 @@ export class UserService {
   private OPTIONS = new RequestOptions({headers: this.HEADERS});
 
   constructor(private http: Http, private authHttp: AuthHttp) {
+  }
+
+  getCarsForUser(userId: number): Observable<Car[]> {
+    return this.authHttp
+      .get(this.USERS_API_PREFIX + '/' + userId + '/cars')
+      .map(res => res.json())
+      .catch(err => Observable.throw(err));
   }
 
   getUserByEmail(email: string): Observable<User> {
