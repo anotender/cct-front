@@ -48,15 +48,17 @@ export class DashboardComponent implements OnInit {
           .subscribe(res => {
             let models: Model[] = res[0];
             let makes: Make[] = res[1];
-            this.popularVersions = versions.map(version => {
-              let model: Model = models.find(model => model.id === version.modelId);
-              let make: Make = makes.find(make => make.id === model.makeId);
-              return {
-                version: version,
-                model: model,
-                make: make
-              };
-            });
+            this.popularVersions = versions
+              .filter(v => v.cars.length !== 0)
+              .map(version => {
+                let model: Model = models.find(model => model.id === version.modelId);
+                let make: Make = makes.find(make => make.id === model.makeId);
+                return {
+                  version: version,
+                  model: model,
+                  make: make
+                };
+              });
             this.progress.done();
           });
       });
