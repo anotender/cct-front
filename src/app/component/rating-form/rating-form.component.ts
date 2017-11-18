@@ -5,6 +5,7 @@ import {NgProgress} from "ngx-progressbar";
 import {AuthService} from "../../service/auth.service";
 import {Rating} from "../../model/rating";
 import {ToastrService} from "ngx-toastr";
+import {DateUtils} from "../../util/date.utils";
 
 @Component({
   selector: 'app-rating-form',
@@ -37,7 +38,7 @@ export class RatingFormComponent {
         versionId: this.versionId,
         comment: this.comment,
         points: this.points,
-        date: new Date().getTime()
+        date: DateUtils.getCurrentTimeInMillis()
       })
       .subscribe(rating => {
         this.ratingSaved.emit(rating);

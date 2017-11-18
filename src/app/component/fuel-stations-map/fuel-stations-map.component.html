@@ -1,43 +1,23 @@
-<div class="col-md-9">
-  <div class="panel panel-default">
-    <agm-map *ngIf="latitude != null && longitude != null" [latitude]="latitude" [longitude]="longitude"
-             [zoom]="13" [minZoom]="6" style="height: 88vh;" (centerChange)="handleCenterChange($event)"
-             (boundsChange)="handleBoundsChange($event)">
-      <agm-marker *ngFor="let fs of fuelStations" [latitude]="fs.latitude" [longitude]="fs.longitude">
-        <agm-info-window>
-          <strong>{{fs.name}}</strong>
-          <p>{{fs.address}}</p>
-          <table>
-            <tr *ngFor="let fp of fuelPrices[fs.id]">
-              <td>{{formatFuel(fp.fuel)}}</td>
-              <td>{{fp.price}}</td>
-              <td>{{formatDate(fp.date)}}</td>
-            </tr>
-          </table>
-          <button class="btn btn-primary btn-block" (click)="fuelPricesFormModal.open()">Update prices</button>
-          <app-fuel-prices-form #fuelPricesFormModal [fuelStationId]="fs.id"
-                                (fuelPricesSaved)="handleFuelPricesSaved($event)"></app-fuel-prices-form>
-        </agm-info-window>
-      </agm-marker>
-    </agm-map>
-  </div>
-</div>
-<div class="col-md-3">
-  <div class="row">
-    <button type="button" class="btn btn-success btn-block" (click)="searchForFuelStations()"
-            [disabled]="!centerHasChanged">
-      Search in this area
-    </button>
-    <br>
-  </div>
-  <div class="row">
-    <div class="panel panel-default">
-      <div class="list-group scrollable">
-        <a *ngFor="let fs of fuelStations" class="link list-group-item">
-          <h4 class="list-group-item-heading">{{fs.name}}</h4>
-          <p class="list-group-item-text">{{fs.address}}</p>
-        </a>
-      </div>
-    </div>
-  </div>
+<div class="panel panel-default">
+  <agm-map *ngIf="latitude != null && longitude != null" [latitude]="latitude" [longitude]="longitude"
+           [zoom]="13" [minZoom]="6" style="height: 88vh;" (centerChange)="handleCenterChange($event)"
+           (boundsChange)="handleBoundsChange($event)">
+    <agm-marker *ngFor="let fs of fuelStations" [latitude]="fs.latitude" [longitude]="fs.longitude">
+      <agm-info-window>
+        <strong>{{fs.name}}</strong>
+        <p>{{fs.address}}</p>
+        <table class="table table-tiles">
+          <tr class="table-tile" *ngFor="let fp of fuelPrices[fs.id]">
+            <td>{{formatFuel(fp.fuel)}}</td>
+            <td data-toggle="tooltip" data-placement="bottom" title="{{'Last price update: ' + formatDate(fp.date)}}">
+              {{fp.price}}
+            </td>
+          </tr>
+        </table>
+        <button class="btn btn-primary btn-block" (click)="fuelPricesFormModal.open()">Update prices</button>
+        <app-fuel-prices-form #fuelPricesFormModal [fuelStationId]="fs.id"
+                              (fuelPricesSaved)="handleFuelPricesSaved($event)"></app-fuel-prices-form>
+      </agm-info-window>
+    </agm-marker>
+  </agm-map>
 </div>

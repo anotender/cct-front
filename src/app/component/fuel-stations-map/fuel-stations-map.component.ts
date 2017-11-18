@@ -19,9 +19,9 @@ export class FuelStationsMapComponent implements OnInit {
   latitude: number;
   longitude: number;
   radius: number;
-  centerHasChanged: boolean = false;
   fuelStations: FuelStation[] = [];
   fuelPrices: { [fuelStationId: string]: FuelPrice[] } = {};
+  private lastTimeoutId;
 
   constructor(private fuelStationService: FuelStationService,
               private fuelPriceService: FuelPriceService,
@@ -44,18 +44,20 @@ export class FuelStationsMapComponent implements OnInit {
   handleCenterChange(event: any): void {
     this.latitude = event.lat;
     this.longitude = event.lng;
-    this.centerHasChanged = true;
+    this.callSearchWithDelay(1500);
   }
 
   handleBoundsChange(bounds: LatLngBounds): void {
     let d1: number = MapUtils.computeDistanceBetweenCoordinates(this.latitude, this.longitude, this.latitude, bounds.getNorthEast().lng());
     let d2: number = MapUtils.computeDistanceBetweenCoordinates(this.latitude, this.longitude, bounds.getNorthEast().lat(), this.longitude);
     this.radius = d1 > d2 ? Math.ceil(d1) : Math.ceil(d2);
+    this.callSearchWithDelay(1500);
   }
 
   searchForFuelStations(): void {
+    console.log('fire');
     this.progress.start();
-    this.centerHasChanged = false;
+    this.fuelPrices = {};
     this.fuelStationService
       .getFuelStationsInArea(this.latitude, this.longitude, this.radius)
       .subscribe(fuelStations => {
@@ -63,14 +65,12 @@ export class FuelStationsMapComponent implements OnInit {
         this.fuelPriceService
           .getFuelPricesForFuelStations(this.fuelStations.map(f => f.id))
           .subscribe(fuelPrices => {
-            console.log(fuelPrices);
             fuelPrices.forEach(f => {
               if (!this.fuelPrices[f.fuelStationId]) {
                 this.fuelPrices[f.fuelStationId] = [];
               }
               this.fuelPrices[f.fuelStationId].push(f);
             });
-            console.log(this.fuelPrices);
             this.progress.done();
           });
       });
@@ -94,6 +94,13 @@ export class FuelStationsMapComponent implements OnInit {
 
   formatDate(millis: number): string {
     return DateUtils.formatDate(millis);
+  }
+
+  private callSearchWithDelay(millis: number): void {
+    clearTimeout(this.lastTimeoutId);
+    this.lastTimeoutId = setTimeout(() => {
+      this.searchForFuelStations();
+    }, millis);
   }
 
 }
