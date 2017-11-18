@@ -37,6 +37,8 @@ import {FuelStationService} from "./service/fuel-station.service";
 import {ToastrModule} from "ngx-toastr";
 import {CustomErrorHandler} from "./config/error.handler";
 import {UserCarsComponent} from './component/user-cars/user-cars.component';
+import {FuelPriceService} from "./service/fuel-price.service";
+import {FuelPricesFormComponent} from './component/fuel-prices-form/fuel-prices-form.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [UnauthGuard]},
@@ -72,7 +74,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ComparisonComponent,
     RatingFormComponent,
     FuelStationsMapComponent,
-    UserCarsComponent
+    UserCarsComponent,
+    FuelPricesFormComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -102,6 +105,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CarService,
     RatingService,
     FuelStationService,
+    FuelPriceService,
     AuthService,
     AuthGuard,
     UnauthGuard,

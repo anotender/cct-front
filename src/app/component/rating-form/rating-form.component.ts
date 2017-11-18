@@ -5,7 +5,6 @@ import {NgProgress} from "ngx-progressbar";
 import {AuthService} from "../../service/auth.service";
 import {Rating} from "../../model/rating";
 import {ToastrService} from "ngx-toastr";
-import {CustomErrorHandler} from "../../config/error.handler";
 
 @Component({
   selector: 'app-rating-form',
@@ -25,7 +24,6 @@ export class RatingFormComponent {
 
   constructor(private ratingService: RatingService,
               private authService: AuthService,
-              private errorHandler: CustomErrorHandler,
               private progress: NgProgress,
               private toastr: ToastrService) {
   }
@@ -45,9 +43,6 @@ export class RatingFormComponent {
         this.ratingSaved.emit(rating);
         this.toastr.success('Added rating');
         this.progress.done();
-        this.close();
-      }, err => {
-        this.errorHandler.handleError(err, 'Something went wrong');
         this.close();
       });
   }

@@ -14,3 +14,8 @@
 .table-tile:hover {
   background-color: #18bc9c;
 }
+
+.scrollable {
+  max-height: 80vh;
+  overflow-y: auto;
+}
