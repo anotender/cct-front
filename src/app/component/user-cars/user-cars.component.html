@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-md-4">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Your cars</h3>
@@ -12,14 +12,17 @@
           </td>
           <td>
             <h4>
-              {{object.model.name}}
-              <small>{{object.version.name}}</small>
+              {{object.car.name}}
+              <br>
+              <small>{{object.make.name + ' ' + object.model.name + ' ' + object.version.name}}</small>
             </h4>
           </td>
-          <td>{{object.version.cars.length}}</td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
+</div>
+<div class="col-md-8">
+  <p>car info...</p>
 </div>

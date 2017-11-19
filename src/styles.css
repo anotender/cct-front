@@ -15,6 +15,14 @@
   background-color: #18bc9c;
 }
 
+.table-tile-danger {
+  background-color: indianred;
+}
+
+.table-tile-success {
+  background-color: palegreen;
+}
+
 .scrollable {
   max-height: 80vh;
   overflow-y: auto;

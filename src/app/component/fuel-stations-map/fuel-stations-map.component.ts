@@ -74,7 +74,6 @@ export class FuelStationsMapComponent implements OnInit {
               this.fuelPrices[f.fuelStationId].push(f);
             });
             this.averageFuelPrices = this.countAverageFuelPrices(fuelPrices);
-            console.log(this.averageFuelPrices);
             this.progress.done();
           });
       });
@@ -90,6 +89,10 @@ export class FuelStationsMapComponent implements OnInit {
 
   formatPrice(price: number): string {
     return NumberUtils.formatNumber(price, 3);
+  }
+
+  getFuelPriceStyle(fp: FuelPrice): string {
+    return fp.price < this.averageFuelPrices[fp.fuel] ? 'table-tile-success' : 'table-tile-danger';
   }
 
   private countAverageFuelPrices(fuelPrices: FuelPrice[]): { [fuel: string]: number } {

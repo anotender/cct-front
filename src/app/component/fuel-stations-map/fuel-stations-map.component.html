@@ -7,11 +7,10 @@
         <strong>{{fs.name}}</strong>
         <p>{{fs.address}}</p>
         <table class="table table-tiles">
-          <tr class="table-tile" *ngFor="let fp of fuelPrices[fs.id]">
+          <tr class="table-tile" [ngClass]="getFuelPriceStyle(fp)" *ngFor="let fp of fuelPrices[fs.id]"
+              data-toggle="tooltip" data-placement="bottom" title="{{'Last price update: ' + formatDate(fp.date)}}">
             <td>{{formatFuel(fp.fuel)}}</td>
-            <td data-toggle="tooltip" data-placement="bottom" title="{{'Last price update: ' + formatDate(fp.date)}}">
-              {{formatPrice(fp.price)}}
-            </td>
+            <td>{{formatPrice(fp.price)}}</td>
           </tr>
         </table>
         <button class="btn btn-primary btn-block" (click)="fuelPricesFormModal.open()">Update prices</button>

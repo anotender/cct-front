@@ -63,7 +63,6 @@ export class UserCarsComponent implements OnInit {
                         make: make
                       };
                     });
-                  console.log(this.cars);
                   this.progress.done();
                 });
             });
