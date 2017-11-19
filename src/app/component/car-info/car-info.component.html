@@ -23,7 +23,7 @@
           <tbody>
           <tr>
             <td>Average rating</td>
-            <td>{{prepareNumberData(averageRating)}}</td>
+            <td>{{formatNumber(averageRating)}}</td>
           </tr>
           <tr>
             <td>Years</td>
@@ -39,15 +39,15 @@
           </tr>
           <tr>
             <td>City fuel consumption</td>
-            <td>{{prepareNumberData(selectedVersion.cityFuelConsumption)}}</td>
+            <td>{{formatNumber(selectedVersion.cityFuelConsumption)}}</td>
           </tr>
           <tr>
             <td>Highway fuel consumption</td>
-            <td>{{prepareNumberData(selectedVersion.highwayFuelConsumption)}}</td>
+            <td>{{formatNumber(selectedVersion.highwayFuelConsumption)}}</td>
           </tr>
           <tr>
             <td>Mixed fuel consumption</td>
-            <td>{{prepareNumberData(selectedVersion.mixedFuelConsumption)}}</td>
+            <td>{{formatNumber(selectedVersion.mixedFuelConsumption)}}</td>
           </tr>
           </tbody>
         </table>
@@ -74,7 +74,7 @@
         <td>No ratings yet. Be the first one to rate this car!</td>
       </tr>
       <tr *ngFor="let r of ratings">
-        <td>{{prepareStringData(r.comment)}}</td>
+        <td>{{formatComment(r.comment)}}</td>
         <td>
           {{r.points}}
           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>

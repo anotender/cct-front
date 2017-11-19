@@ -8,6 +8,8 @@ import {FuelPriceService} from "../../service/fuel-price.service";
 import {FuelPrice} from "../../model/fuel-price";
 import {DateUtils} from "../../util/date.utils";
 import {FuelUtils} from "../../util/fuel.utils";
+import {NumberUtils} from "../../util/number.utils";
+import {Fuel} from "../../model/fuel";
 
 @Component({
   selector: 'app-fuel-stations-map',
@@ -21,6 +23,7 @@ export class FuelStationsMapComponent implements OnInit {
   radius: number;
   fuelStations: FuelStation[] = [];
   fuelPrices: { [fuelStationId: string]: FuelPrice[] } = {};
+  private averageFuelPrices: { [fuel: string]: number } = {};
   private lastTimeoutId;
 
   constructor(private fuelStationService: FuelStationService,
@@ -55,7 +58,6 @@ export class FuelStationsMapComponent implements OnInit {
   }
 
   searchForFuelStations(): void {
-    console.log('fire');
     this.progress.start();
     this.fuelPrices = {};
     this.fuelStationService
@@ -71,21 +73,11 @@ export class FuelStationsMapComponent implements OnInit {
               }
               this.fuelPrices[f.fuelStationId].push(f);
             });
+            this.averageFuelPrices = this.countAverageFuelPrices(fuelPrices);
+            console.log(this.averageFuelPrices);
             this.progress.done();
           });
       });
-  }
-
-  handleFuelPricesSaved(fuelPrices: FuelPrice[]): void {
-    fuelPrices.forEach(f => {
-      let previousFuelPrice: FuelPrice = this.fuelPrices[f.fuelStationId].find(fp => fp.fuel === f.fuel);
-      if (!previousFuelPrice) {
-        this.fuelPrices[f.fuelStationId].push(f);
-      } else {
-        previousFuelPrice.price = f.price;
-        previousFuelPrice.date = f.date;
-      }
-    });
   }
 
   formatFuel(fuel: string): string {
@@ -94,6 +86,18 @@ export class FuelStationsMapComponent implements OnInit {
 
   formatDate(millis: number): string {
     return DateUtils.formatDate(millis);
+  }
+
+  formatPrice(price: number): string {
+    return NumberUtils.formatNumber(price, 3);
+  }
+
+  private countAverageFuelPrices(fuelPrices: FuelPrice[]): { [fuel: string]: number } {
+    let averageFuelPrices: { [fuel: string]: number } = {};
+    [Fuel.DIESEL, Fuel.NATURAL_GAS, Fuel.ETHANOL, Fuel.GASOLINE].forEach(f => {
+      averageFuelPrices[f] = this.fuelPriceService.countAverageFuelPrice(f, fuelPrices);
+    });
+    return averageFuelPrices;
   }
 
   private callSearchWithDelay(millis: number): void {

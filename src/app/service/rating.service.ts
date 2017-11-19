@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
 import {Headers, RequestOptions} from "@angular/http";
-import {AppComponent} from "../app.component";
 import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
 import {Rating} from "../model/rating";
 import {AppConfig} from "../config/app.config";
+import {NumberUtils} from "../util/number.utils";
 
 @Injectable()
 export class RatingService {
@@ -25,8 +25,7 @@ export class RatingService {
   }
 
   countAverageRating(ratings: Rating[]): number {
-    let sum: number = ratings.map(r => r.points).reduce((a, b) => a + b, 0);
-    return sum / ratings.length;
+    return NumberUtils.countAverage(ratings.map(r => r.points));
   }
 
 }

@@ -4,6 +4,7 @@ import {AuthHttp} from "angular2-jwt";
 import {AppConfig} from "../config/app.config";
 import {FuelPrice} from "../model/fuel-price";
 import {Headers, RequestOptions} from "@angular/http";
+import {NumberUtils} from "../util/number.utils";
 
 @Injectable()
 export class FuelPriceService {
@@ -28,6 +29,10 @@ export class FuelPriceService {
       .post(this.FUEL_PRICES_API_PREFIX, body, this.OPTIONS)
       .map(res => res.json())
       .catch(err => Observable.throw(err));
+  }
+
+  countAverageFuelPrice(fuel: string, fuelPrices: FuelPrice[]): number {
+    return NumberUtils.countAverage(fuelPrices.filter(fp => fp.fuel === fuel).map(fp => fp.price));
   }
 
 }

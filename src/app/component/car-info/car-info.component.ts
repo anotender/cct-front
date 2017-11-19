@@ -17,6 +17,7 @@ import {RatingFormComponent} from "../rating-form/rating-form.component";
 import {RatingService} from "../../service/rating.service";
 import {ToastrService} from "ngx-toastr";
 import {DateUtils} from "../../util/date.utils";
+import {NumberUtils} from "../../util/number.utils";
 
 @Component({
   selector: 'app-car-info',
@@ -98,20 +99,16 @@ export class CarInfoComponent implements OnInit {
     this.averageRating = this.ratingService.countAverageRating(this.ratings);
   }
 
-  prepareNumberData(n: number): string {
-    return `${this.isDataProvided(n) ? Number(n).toFixed(2) : 'No data'}`;
+  formatNumber(n: number): string {
+    return NumberUtils.formatNumber(n, 2);
   }
 
-  prepareStringData(s: string): string {
+  formatComment(s: string): string {
     return StringUtils.isNotEmpty(s) ? s : 'No comment';
   }
 
   formatDate(millis: number): string {
     return DateUtils.formatDate(millis);
-  }
-
-  private isDataProvided(n: number): boolean {
-    return n && n != null && n !== 0;
   }
 
 }

@@ -10,13 +10,13 @@
           <tr class="table-tile" *ngFor="let fp of fuelPrices[fs.id]">
             <td>{{formatFuel(fp.fuel)}}</td>
             <td data-toggle="tooltip" data-placement="bottom" title="{{'Last price update: ' + formatDate(fp.date)}}">
-              {{fp.price}}
+              {{formatPrice(fp.price)}}
             </td>
           </tr>
         </table>
         <button class="btn btn-primary btn-block" (click)="fuelPricesFormModal.open()">Update prices</button>
         <app-fuel-prices-form #fuelPricesFormModal [fuelStationId]="fs.id"
-                              (fuelPricesSaved)="handleFuelPricesSaved($event)"></app-fuel-prices-form>
+                              (fuelPricesSaved)="searchForFuelStations()"></app-fuel-prices-form>
       </agm-info-window>
     </agm-marker>
   </agm-map>
