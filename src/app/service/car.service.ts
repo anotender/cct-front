@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
 import {Car} from "../model/car";
 import {AppConfig} from "../config/app.config";
+import {FuelRefill} from "../model/fuel-refill";
 
 @Injectable()
 export class CarService {
@@ -20,6 +21,17 @@ export class CarService {
     return this.authHttp
       .post(this.CARS_API_PREFIX, body, this.OPTIONS)
       .catch(err => Observable.throw(err));
+  }
+
+  getFuelRefillsForCar(carId: number): Observable<FuelRefill[]> {
+    return this.authHttp
+      .get(this.CARS_API_PREFIX + '/' + carId + '/fuelrefills')
+      .map(res => res.json())
+      .catch(err => Observable.throw(err));
+  }
+
+  getCarEventsForCar(carId: number): Observable<any> {
+    return Observable.empty();
   }
 
 }

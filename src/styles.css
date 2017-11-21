@@ -15,6 +15,10 @@
   background-color: #18bc9c;
 }
 
+.table-tile-active {
+  background-color: #18bc9c;
+}
+
 .table-tile-danger {
   background-color: indianred;
 }

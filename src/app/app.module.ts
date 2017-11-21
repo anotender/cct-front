@@ -39,6 +39,8 @@ import {CustomErrorHandler} from "./config/error.handler";
 import {UserCarsComponent} from './component/user-cars/user-cars.component';
 import {FuelPriceService} from "./service/fuel-price.service";
 import {FuelPricesFormComponent} from './component/fuel-prices-form/fuel-prices-form.component';
+import {FuelRefillFormComponent} from './component/fuel-refill-form/fuel-refill-form.component';
+import {FuelRefillService} from "./service/fuel-refill.service";
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [UnauthGuard]},
@@ -75,7 +77,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RatingFormComponent,
     FuelStationsMapComponent,
     UserCarsComponent,
-    FuelPricesFormComponent
+    FuelPricesFormComponent,
+    FuelRefillFormComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -106,6 +109,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RatingService,
     FuelStationService,
     FuelPriceService,
+    FuelRefillService,
     AuthService,
     AuthGuard,
     UnauthGuard,

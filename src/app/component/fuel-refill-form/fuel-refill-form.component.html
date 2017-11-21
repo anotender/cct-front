@@ -1,0 +1,45 @@
+<bs-modal #modal>
+  <bs-modal-header>
+    <h4 class="modal-title">Fuel prices</h4>
+  </bs-modal-header>
+  <form class="form-horizontal" (ngSubmit)="submitFuelRefillForm(fuelRefillForm.value)" [formGroup]="fuelRefillForm">
+    <bs-modal-body>
+      <div class="form-group" [ngClass]="{'has-error': liters.invalid && (liters.dirty || liters.touched)}">
+        <label for="liters" class="col-md-2 control-label">Liters</label>
+        <div class="col-md-10">
+          <input type="number" id="liters" name="liters" placeholder="Liters" class="form-control" required="required"
+                 formControlName="liters" min="0"/>
+        </div>
+        <div *ngIf="liters.invalid && (liters.dirty || liters.touched)">
+          <span class="help-block" *ngIf="liters.errors.required">This field is required</span>
+          <span class="help-block" *ngIf="liters.errors.min">Value must be greater or equal 0</span>
+        </div>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': distance.invalid && (distance.dirty || distance.touched)}">
+        <label for="distance" class="col-md-2 control-label">Distance</label>
+        <div class="col-md-10">
+          <input type="number" id="distance" name="distance" placeholder="Distance" class="form-control"
+                 required="required" formControlName="distance" min="0"/>
+        </div>
+        <div *ngIf="distance.invalid && (distance.dirty || distance.touched)">
+          <span class="help-block" *ngIf="distance.errors.required">This field is required</span>
+          <span class="help-block" *ngIf="distance.errors.min">Value must be greater or equal 0</span>
+        </div>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': date.invalid && (date.dirty || date.touched)}">
+        <label for="date" class="col-md-2 control-label">Date</label>
+        <div class="col-md-10">
+          <input type="date" id="date" name="date" placeholder="Date" class="form-control" required="required"
+                 formControlName="date"/>
+        </div>
+        <span class="help-block" *ngIf="date.invalid && (date.dirty || date.touched)">This field is required</span>
+      </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button class="btn btn-primary" type="submit" [disabled]="fuelRefillForm.invalid">
+        Save
+      </button>
+      <button class="btn btn-default" type="button" (click)="modal.dismiss()">Cancel</button>
+    </bs-modal-footer>
+  </form>
+</bs-modal>

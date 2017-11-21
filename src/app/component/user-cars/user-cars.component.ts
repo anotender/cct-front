@@ -9,6 +9,12 @@ import {Observable} from "rxjs/Observable";
 import {Model} from "../../model/model";
 import {Make} from "../../model/make";
 import {Version} from "../../model/version";
+import {Car} from "../../model/car";
+import {FuelRefill} from "../../model/fuel-refill";
+import {CarService} from "../../service/car.service";
+import {FuelRefillService} from "../../service/fuel-refill.service";
+import {DateUtils} from "../../util/date.utils";
+import {NumberUtils} from "../../util/number.utils";
 
 @Component({
   selector: 'app-user-cars',
@@ -17,7 +23,8 @@ import {Version} from "../../model/version";
 })
 export class UserCarsComponent implements OnInit {
 
-  cars: any[] = [];
+  vehicles: Vehicle[] = [];
+  selectedVehicle: Vehicle = null;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -25,6 +32,8 @@ export class UserCarsComponent implements OnInit {
               private versionService: VersionService,
               private modelService: ModelService,
               private makeService: MakeService,
+              private carService: CarService,
+              private fuelRefillService: FuelRefillService,
               private progress: NgProgress) {
   }
 
@@ -51,18 +60,18 @@ export class UserCarsComponent implements OnInit {
                   let models: Model[] = res[0];
                   let makes: Make[] = res[1];
 
-                  this.cars = cars
-                    .map(car => {
-                      let version: Version = versions.find(v => v.id === car.versionId);
-                      let model: Model = models.find(m => m.id === version.modelId);
-                      let make: Make = makes.find(m => m.id === model.makeId);
-                      return {
-                        car: car,
-                        version: version,
-                        model: model,
-                        make: make
-                      };
-                    });
+                  this.vehicles = cars.map(car => {
+                    let version: Version = versions.find(v => v.id === car.versionId);
+                    let model: Model = models.find(m => m.id === version.modelId);
+                    let make: Make = makes.find(m => m.id === model.makeId);
+                    return {
+                      car: car,
+                      version: version,
+                      model: model,
+                      make: make,
+                      fuelRefills: null
+                    };
+                  });
                   this.progress.done();
                 });
             });
@@ -70,8 +79,57 @@ export class UserCarsComponent implements OnInit {
     });
   }
 
+  selectVehicle(v: Vehicle): void {
+    if (this.selectedVehicle === v) {
+      return;
+    }
+
+    this.selectedVehicle = v;
+
+    if (v.fuelRefills != null) {
+      return;
+    }
+
+    this.progress.start();
+    Observable
+      .forkJoin(
+        this.carService.getFuelRefillsForCar(v.car.id)
+      )
+      .subscribe(res => {
+        this.selectedVehicle.fuelRefills = res[0];
+        this.progress.done();
+      });
+  }
+
   showCarInfo(id: string): void {
     this.router.navigate(['/cars', id]);
   }
 
+  handleFuelRefillSaved(fuelRefill: FuelRefill): void {
+    if (this.selectedVehicle.fuelRefills == null) {
+      this.selectedVehicle.fuelRefills = [];
+    }
+    this.selectedVehicle.fuelRefills.push(fuelRefill);
+  }
+
+  countAverageFuelConsumption(fuelRefills: FuelRefill[]): number {
+    return this.fuelRefillService.countAverageFuelConsumption(fuelRefills ? fuelRefills : []);
+  }
+
+  formatDate(millis: number): string {
+    return DateUtils.formatDate(millis);
+  }
+
+  formatFuelConsumption(fuelConsumption: number): string {
+    return NumberUtils.formatNumber(fuelConsumption, 2);
+  }
+
+}
+
+class Vehicle {
+  car: Car;
+  version: Version;
+  model: Model;
+  make: Make;
+  fuelRefills: FuelRefill[] = null;
 }

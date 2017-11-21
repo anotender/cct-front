@@ -26,6 +26,9 @@ export class ComparisonComponent implements OnInit {
   selectedModel: Model = null;
   selectedVersion: Version = null;
 
+  private delayDuration: number = 1000;
+  private lastTimeoutId;
+
   constructor(private makeService: MakeService,
               private modelService: ModelService,
               private versionService: VersionService,
@@ -61,7 +64,6 @@ export class ComparisonComponent implements OnInit {
           'averageRating': this.ratingService.countAverageRating(res[1])
         });
         this.finishAdding();
-        this.progress.done();
       }, err => {
         this.errorHandler.handleError(err);
         this.finishAdding();
@@ -69,31 +71,37 @@ export class ComparisonComponent implements OnInit {
   }
 
   onMakeChange(make: Make): void {
-    this.progress.start();
-    this.selectedMake = make;
-    this.selectedModel = null;
-    this.selectedVersion = null;
-    this.models.length = 0;
-    this.versions.length = 0;
-    this.makeService
-      .getModelsForMake(make.id)
-      .subscribe(models => {
-        this.models = models;
-        this.progress.done();
-      });
+    clearTimeout(this.lastTimeoutId);
+    this.lastTimeoutId = setTimeout(() => {
+      this.progress.start();
+      this.selectedMake = make;
+      this.selectedModel = null;
+      this.selectedVersion = null;
+      this.models.length = 0;
+      this.versions.length = 0;
+      this.makeService
+        .getModelsForMake(make.id)
+        .subscribe(models => {
+          this.models = models;
+          this.progress.done();
+        });
+    }, this.delayDuration);
   }
 
   onModelChange(model: Model): void {
-    this.progress.start();
-    this.selectedModel = model;
-    this.selectedVersion = null;
-    this.versions.length = 0;
-    this.modelService
-      .getVersionsForModel(model.id)
-      .subscribe(versions => {
-        this.versions = versions;
-        this.progress.done();
-      });
+    clearTimeout(this.lastTimeoutId);
+    this.lastTimeoutId = setTimeout(() => {
+      this.progress.start();
+      this.selectedModel = model;
+      this.selectedVersion = null;
+      this.versions.length = 0;
+      this.modelService
+        .getVersionsForModel(model.id)
+        .subscribe(versions => {
+          this.versions = versions;
+          this.progress.done();
+        });
+    }, this.delayDuration);
   }
 
   removeFromComparison(c: any): void {

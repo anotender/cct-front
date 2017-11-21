@@ -7,9 +7,12 @@ export class NumberUtils {
     return `${this.isDataProvided(n) ? Number(n).toFixed(fractionDigits) : 'N/A'}`;
   }
 
+  public static countSum(numbers: number[]): number {
+    return numbers.reduce((a, b) => a + b, 0);
+  }
+
   public static countAverage(numbers: number[]): number {
-    let sum: number = numbers.reduce((a, b) => a + b, 0);
-    return sum / numbers.length;
+    return NumberUtils.countSum(numbers) / numbers.length;
   }
 
   private static isDataProvided(n: number): boolean {
