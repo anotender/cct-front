@@ -75,23 +75,21 @@ export class CarInfoComponent implements OnInit {
       .title('Adding ' + this.selectedMake.name + ' ' + this.selectedModel.name + ' ' + this.selectedVersion.name + ' to your cars')
       .placeholder('Car name')
       .open()
-      .then(dialogRef => {
-          dialogRef.result.then(name => {
-            this.progress.start();
-            this.carService
-              .save({
-                id: null,
-                name: name,
-                versionId: this.selectedVersion.id,
-                userId: this.authService.getCurrentUserId()
-              })
-              .subscribe(res => {
-                this.toastr.success('Car "' + name + '" has just been added to your cars!');
-                this.progress.done();
-              });
+      .then(dialogRef => dialogRef.result.then(name => {
+        this.progress.start();
+        this.carService
+          .save({
+            id: null,
+            name: name,
+            versionId: this.selectedVersion.id,
+            userId: this.authService.getCurrentUserId()
+          })
+          .subscribe(res => {
+            this.toastr.success('Car "' + name + '" has just been added to your cars!');
+            this.progress.done();
           });
-        }
-      );
+      }), ignored => {
+      });
   }
 
   handleRatingSaved(rating: Rating): void {

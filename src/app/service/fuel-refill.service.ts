@@ -24,6 +24,12 @@ export class FuelRefillService {
       .catch(err => Observable.throw(err));
   }
 
+  delete(id: number): Observable<any> {
+    return this.authHttp
+      .delete(this.FUEL_REFILLS_API_PREFIX + '/' + id)
+      .catch(err => Observable.throw(err));
+  }
+
   countAverageFuelConsumption(fuelRefills: FuelRefill[]): number {
     let totalDistance: number = NumberUtils.countSum(fuelRefills.map(fr => fr.distance));
     let totalLiters: number = NumberUtils.countSum(fuelRefills.map(fr => fr.liters));

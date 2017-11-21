@@ -23,6 +23,12 @@ export class CarService {
       .catch(err => Observable.throw(err));
   }
 
+  delete(id: number): Observable<any> {
+    return this.authHttp
+      .delete(this.CARS_API_PREFIX + '/' + id)
+      .catch(err => Observable.throw(err));
+  }
+
   getFuelRefillsForCar(carId: number): Observable<FuelRefill[]> {
     return this.authHttp
       .get(this.CARS_API_PREFIX + '/' + carId + '/fuelrefills')

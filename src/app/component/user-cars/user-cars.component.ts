@@ -15,6 +15,8 @@ import {CarService} from "../../service/car.service";
 import {FuelRefillService} from "../../service/fuel-refill.service";
 import {DateUtils} from "../../util/date.utils";
 import {NumberUtils} from "../../util/number.utils";
+import {ToastrService} from "ngx-toastr";
+import {Modal} from "ngx-modialog/plugins/bootstrap";
 
 @Component({
   selector: 'app-user-cars',
@@ -34,7 +36,9 @@ export class UserCarsComponent implements OnInit {
               private makeService: MakeService,
               private carService: CarService,
               private fuelRefillService: FuelRefillService,
-              private progress: NgProgress) {
+              private progress: NgProgress,
+              private toastr: ToastrService,
+              private modal: Modal) {
   }
 
   ngOnInit() {
@@ -101,6 +105,37 @@ export class UserCarsComponent implements OnInit {
       });
   }
 
+  deleteVehicle(vehicle: Vehicle): void {
+    this.showConfirmationDialog('You are trying to delete car ' + vehicle.car.name, res => {
+      this.progress.start();
+      this.carService
+        .delete(vehicle.car.id)
+        .subscribe(res => {
+          this.vehicles = this.vehicles.filter(v => v !== vehicle);
+          this.selectedVehicle = null;
+          this.toastr.success('Car deleted');
+          this.progress.done();
+        });
+    });
+  }
+
+  deleteFuelRefill(fuelRefill: FuelRefill): void {
+    this.showConfirmationDialog('You are trying to delete fuel refill from ' + this.formatDate(fuelRefill.date), res => {
+      this.progress.start();
+      this.fuelRefillService
+        .delete(fuelRefill.id)
+        .subscribe(res => {
+          this.selectedVehicle.fuelRefills = this.selectedVehicle.fuelRefills.filter(fr => fr !== fuelRefill);
+          this.toastr.success('Fuel refill deleted');
+          this.progress.done();
+        });
+    });
+  }
+
+  showCars(): void {
+    this.router.navigateByUrl('/cars');
+  }
+
   showCarInfo(id: string): void {
     this.router.navigate(['/cars', id]);
   }
@@ -122,6 +157,16 @@ export class UserCarsComponent implements OnInit {
 
   formatFuelConsumption(fuelConsumption: number): string {
     return NumberUtils.formatNumber(fuelConsumption, 2);
+  }
+
+  private showConfirmationDialog(message: string, successCallback: (any) => void): void {
+    this.modal
+      .confirm()
+      .title('Are you sure?')
+      .body(message)
+      .open()
+      .then(dialogRef => dialogRef.result.then(successCallback, ignore => {
+      }));
   }
 
 }
