@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Make} from "../../model/make";
 import {Version} from "../../model/version";
 import {Model} from "../../model/model";
@@ -36,6 +36,7 @@ export class CarInfoComponent implements OnInit {
   averageRating: number;
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private progress: NgProgress,
               private versionService: VersionService,
               private modelService: ModelService,
@@ -86,6 +87,7 @@ export class CarInfoComponent implements OnInit {
           })
           .subscribe(res => {
             this.toastr.success('Car "' + name + '" has just been added to your cars!');
+            this.router.navigateByUrl('/users/' + this.authService.getCurrentUserId() + '/cars');
             this.progress.done();
           });
       }), ignored => {

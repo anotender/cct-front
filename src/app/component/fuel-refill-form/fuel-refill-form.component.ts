@@ -64,6 +64,7 @@ export class FuelRefillFormComponent implements OnInit {
   }
 
   private close(): void {
+    this.fuelRefillForm.reset();
     this.progress.done();
     this.modal.close();
   }
