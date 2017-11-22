@@ -10,6 +10,8 @@ import {VersionService} from "../../service/version.service";
 import {RatingService} from "../../service/rating.service";
 import {Observable} from "rxjs/Observable";
 import {CustomErrorHandler} from "../../config/error.handler";
+import {NumberUtils} from "../../util/number.utils";
+import {FuelUtils} from "../../util/fuel.utils";
 
 @Component({
   selector: 'app-comparison',
@@ -112,12 +114,16 @@ export class ComparisonComponent implements OnInit {
     this.router.navigate(['/cars', id]);
   }
 
-  prepareNumberData(n: number): string {
-    return `${this.isDataProvided(n) ? Number(n).toFixed(2) : 'No data'}`;
+  formatFuel(fuel: string): string {
+    return FuelUtils.getTextForFuel(fuel);
   }
 
-  private isDataProvided(n: number): boolean {
-    return n && n != null && n !== 0;
+  formatRating(rating: number): string {
+    return NumberUtils.formatNumber(rating, 2);
+  }
+
+  formatFuelConsumption(fuelConsumption: number): string {
+    return NumberUtils.formatNumber(fuelConsumption, 2);
   }
 
   private finishAdding(): void {

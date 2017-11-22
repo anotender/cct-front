@@ -1,5 +1,8 @@
 export class StringUtils {
 
+  private constructor() {
+  }
+
   static isEmpty(s: string): boolean {
     return !s || s.trim().length === 0;
   }
