@@ -8,7 +8,7 @@ export class StringUtils {
   }
 
   static isNotEmpty(s: string): boolean {
-    return !this.isEmpty(s);
+    return !StringUtils.isEmpty(s);
   }
 
   static contains(str: string, substr: string): boolean {
@@ -16,7 +16,7 @@ export class StringUtils {
   }
 
   static containsIgnoreCase(str: string, substr: string): boolean {
-    return this.contains(str.toLowerCase(), substr.toLowerCase());
+    return StringUtils.contains(str.toLowerCase(), substr.toLowerCase());
   }
 
 }

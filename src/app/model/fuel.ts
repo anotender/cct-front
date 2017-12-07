@@ -4,6 +4,7 @@ export class Fuel {
   public static GASOLINE: string = 'GASOLINE';
   public static NATURAL_GAS: string = 'NATURAL_GAS';
   public static ETHANOL: string = 'ETHANOL';
+  public static ELECTRIC: string = 'ELECTRIC';
 
   private constructor() {
   }

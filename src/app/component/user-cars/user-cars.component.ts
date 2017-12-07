@@ -28,6 +28,9 @@ export class UserCarsComponent implements OnInit {
   vehicles: Vehicle[] = [];
   selectedVehicle: Vehicle = null;
 
+  formatDate: (millis: number) => string = DateUtils.formatDate;
+  formatNumber: (n: number, fractionDigits: number) => string = NumberUtils.formatNumber;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private userService: UserService,
@@ -149,14 +152,6 @@ export class UserCarsComponent implements OnInit {
 
   countAverageFuelConsumption(fuelRefills: FuelRefill[]): number {
     return this.fuelRefillService.countAverageFuelConsumption(fuelRefills ? fuelRefills : []);
-  }
-
-  formatDate(millis: number): string {
-    return DateUtils.formatDate(millis);
-  }
-
-  formatFuelConsumption(fuelConsumption: number): string {
-    return NumberUtils.formatNumber(fuelConsumption, 2);
   }
 
   private showConfirmationDialog(message: string, successCallback: (any) => void): void {

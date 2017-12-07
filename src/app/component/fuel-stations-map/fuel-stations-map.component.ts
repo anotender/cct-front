@@ -26,6 +26,11 @@ export class FuelStationsMapComponent implements OnInit {
   private averageFuelPrices: { [fuel: string]: number } = {};
   private lastTimeoutId;
 
+
+  formatFuel: (fuel: string) => string = FuelUtils.getTextForFuel;
+  formatDate: (millis: number) => string = DateUtils.formatDate;
+  formatNumber: (n: number, fractionDigits: number) => string = NumberUtils.formatNumber;
+
   constructor(private fuelStationService: FuelStationService,
               private fuelPriceService: FuelPriceService,
               private progress: NgProgress) {
@@ -77,18 +82,6 @@ export class FuelStationsMapComponent implements OnInit {
             this.progress.done();
           });
       });
-  }
-
-  formatFuel(fuel: string): string {
-    return FuelUtils.getTextForFuel(fuel);
-  }
-
-  formatDate(millis: number): string {
-    return DateUtils.formatDate(millis);
-  }
-
-  formatPrice(price: number): string {
-    return NumberUtils.formatNumber(price, 3);
   }
 
   getFuelPriceStyle(fp: FuelPrice): string {

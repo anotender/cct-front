@@ -1,22 +1,20 @@
-<div class="panel panel-default">
-  <agm-map *ngIf="latitude != null && longitude != null" [latitude]="latitude" [longitude]="longitude"
-           [zoom]="13" [minZoom]="6" style="height: 88vh;" (centerChange)="handleCenterChange($event)"
-           (boundsChange)="handleBoundsChange($event)">
-    <agm-marker *ngFor="let fs of fuelStations" [latitude]="fs.latitude" [longitude]="fs.longitude">
-      <agm-info-window>
-        <strong>{{fs.name}}</strong>
-        <p>{{fs.address}}</p>
-        <table class="table table-tiles">
-          <tr class="table-tile" *ngFor="let fp of fuelPrices[fs.id]" [ngClass]="getFuelPriceStyle(fp)"
-              data-toggle="tooltip" data-placement="bottom" title="{{'Last price update: ' + formatDate(fp.date)}}">
-            <td>{{formatFuel(fp.fuel)}}</td>
-            <td>{{formatPrice(fp.price)}}</td>
-          </tr>
-        </table>
-        <button class="btn btn-primary btn-block" (click)="fuelPricesFormModal.open()">Update prices</button>
-        <app-fuel-prices-form #fuelPricesFormModal [fuelStationId]="fs.id"
-                              (fuelPricesSaved)="searchForFuelStations()"></app-fuel-prices-form>
-      </agm-info-window>
-    </agm-marker>
-  </agm-map>
-</div>
+<agm-map *ngIf="latitude != null && longitude != null" [latitude]="latitude" [longitude]="longitude"
+         [zoom]="13" [minZoom]="6" style="height: 88vh;"
+         (centerChange)="handleCenterChange($event)" (boundsChange)="handleBoundsChange($event)">
+  <agm-marker *ngFor="let fs of fuelStations" [latitude]="fs.latitude" [longitude]="fs.longitude">
+    <agm-info-window>
+      <strong>{{fs.name}}</strong>
+      <p>{{fs.address}}</p>
+      <table class="table table-tiles">
+        <tr class="table-tile" *ngFor="let fp of fuelPrices[fs.id]" [ngClass]="getFuelPriceStyle(fp)"
+            data-toggle="tooltip" data-placement="bottom" title="{{'Last price update: ' + formatDate(fp.date)}}">
+          <td>{{formatFuel(fp.fuel)}}</td>
+          <td>{{formatNumber(fp.price, 3)}}</td>
+        </tr>
+      </table>
+      <button class="btn btn-primary btn-block" (click)="fuelPricesFormModal.open()">Update prices</button>
+      <app-fuel-prices-form #fuelPricesFormModal [fuelStationId]="fs.id"
+                            (fuelPricesSaved)="searchForFuelStations()"></app-fuel-prices-form>
+    </agm-info-window>
+  </agm-marker>
+</agm-map>

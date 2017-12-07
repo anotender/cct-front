@@ -4,7 +4,7 @@ export class NumberUtils {
   }
 
   public static formatNumber(n: number, fractionDigits: number): string {
-    return `${this.isDataProvided(n) ? Number(n).toFixed(fractionDigits) : 'N/A'}`;
+    return `${NumberUtils.isDataProvided(n) ? Number(n).toFixed(fractionDigits) : 'N/A'}`;
   }
 
   public static countSum(numbers: number[]): number {

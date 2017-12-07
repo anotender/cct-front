@@ -23,7 +23,7 @@
           <tbody>
           <tr>
             <td>Average rating</td>
-            <td>{{formatNumber(averageRating)}}</td>
+            <td>{{formatNumber(averageRating, 2)}}</td>
           </tr>
           <tr>
             <td>Years</td>
@@ -35,23 +35,23 @@
           </tr>
           <tr>
             <td>Fuel</td>
-            <td>{{selectedVersion.fuel}}</td>
+            <td>{{formatFuel(selectedVersion.fuel)}}</td>
           </tr>
           <tr>
             <td>City fuel consumption</td>
-            <td>{{formatNumber(selectedVersion.cityFuelConsumption)}}</td>
+            <td>{{formatNumber(selectedVersion.cityFuelConsumption, 2)}}</td>
           </tr>
           <tr>
             <td>Highway fuel consumption</td>
-            <td>{{formatNumber(selectedVersion.highwayFuelConsumption)}}</td>
+            <td>{{formatNumber(selectedVersion.highwayFuelConsumption, 2)}}</td>
           </tr>
           <tr>
             <td>Mixed fuel consumption</td>
-            <td>{{formatNumber(selectedVersion.mixedFuelConsumption)}}</td>
+            <td>{{formatNumber(selectedVersion.mixedFuelConsumption, 2)}}</td>
           </tr>
           <tr>
             <td>Average fuel consumption</td>
-            <td>{{formatNumber(selectedVersion.averageFuelConsumption)}}</td>
+            <td>{{formatNumber(selectedVersion.averageFuelConsumption, 2)}}</td>
           </tr>
           </tbody>
         </table>

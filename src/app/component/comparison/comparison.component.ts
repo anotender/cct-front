@@ -28,6 +28,9 @@ export class ComparisonComponent implements OnInit {
   selectedModel: Model = null;
   selectedVersion: Version = null;
 
+  formatFuel: (fuel: string) => string = FuelUtils.getTextForFuel;
+  formatNumber: (n: number, fractionDigits: number) => string = NumberUtils.formatNumber;
+
   private delayDuration: number = 1000;
   private lastTimeoutId;
 
@@ -112,18 +115,6 @@ export class ComparisonComponent implements OnInit {
 
   showCarInfo(id: string): void {
     this.router.navigate(['/cars', id]);
-  }
-
-  formatFuel(fuel: string): string {
-    return FuelUtils.getTextForFuel(fuel);
-  }
-
-  formatRating(rating: number): string {
-    return NumberUtils.formatNumber(rating, 2);
-  }
-
-  formatFuelConsumption(fuelConsumption: number): string {
-    return NumberUtils.formatNumber(fuelConsumption, 2);
   }
 
   private finishAdding(): void {

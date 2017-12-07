@@ -18,6 +18,7 @@ import {RatingService} from "../../service/rating.service";
 import {ToastrService} from "ngx-toastr";
 import {DateUtils} from "../../util/date.utils";
 import {NumberUtils} from "../../util/number.utils";
+import {FuelUtils} from "../../util/fuel.utils";
 
 @Component({
   selector: 'app-car-info',
@@ -34,6 +35,9 @@ export class CarInfoComponent implements OnInit {
   selectedVersion: Version = new Version();
   ratings: Rating[] = [];
   averageRating: number;
+  formatNumber: (n: number, fractionDigits: number) => string = NumberUtils.formatNumber;
+  formatFuel: (fuel: string) => string = FuelUtils.getTextForFuel;
+  formatDate: (millis: number) => string = DateUtils.formatDate;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -99,16 +103,8 @@ export class CarInfoComponent implements OnInit {
     this.averageRating = this.ratingService.countAverageRating(this.ratings);
   }
 
-  formatNumber(n: number): string {
-    return NumberUtils.formatNumber(n, 2);
-  }
-
   formatComment(s: string): string {
     return StringUtils.isNotEmpty(s) ? s : 'No comment';
-  }
-
-  formatDate(millis: number): string {
-    return DateUtils.formatDate(millis);
   }
 
 }
