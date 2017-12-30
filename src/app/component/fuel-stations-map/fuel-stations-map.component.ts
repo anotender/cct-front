@@ -6,9 +6,6 @@ import {LatLngBounds} from "@agm/core";
 import {MapUtils} from "../../util/map.utils";
 import {FuelPriceService} from "../../service/fuel-price.service";
 import {FuelPrice} from "../../model/fuel-price";
-import {DateUtils} from "../../util/date.utils";
-import {FuelUtils} from "../../util/fuel.utils";
-import {NumberUtils} from "../../util/number.utils";
 import {Fuel} from "../../model/fuel";
 
 @Component({
@@ -25,11 +22,6 @@ export class FuelStationsMapComponent implements OnInit {
   fuelPrices: { [fuelStationId: string]: FuelPrice[] } = {};
   private averageFuelPrices: { [fuel: string]: number } = {};
   private lastTimeoutId;
-
-
-  formatFuel: (fuel: string) => string = FuelUtils.getTextForFuel;
-  formatDate: (millis: number) => string = DateUtils.formatDate;
-  formatNumber: (n: number, fractionDigits: number) => string = NumberUtils.formatNumber;
 
   constructor(private fuelStationService: FuelStationService,
               private fuelPriceService: FuelPriceService,

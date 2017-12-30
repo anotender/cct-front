@@ -41,7 +41,7 @@
           <tbody>
           <tr>
             <td><b>Average rating</b></td>
-            <td *ngFor="let c of carsToCompare">{{formatNumber(c.averageRating, 2)}}</td>
+            <td *ngFor="let c of carsToCompare">{{c.averageRating | formatNumber:2}}</td>
           </tr>
           <tr>
             <td><b>Years</b></td>
@@ -54,31 +54,31 @@
           <tr>
             <td><b>Fuel</b></td>
             <td *ngFor="let c of carsToCompare">
-              {{formatFuel(c.version.fuel)}}
+              {{c.version.fuel | formatFuel}}
             </td>
           </tr>
           <tr>
             <td><b>City fuel consumption</b></td>
             <td *ngFor="let c of carsToCompare">
-              {{formatNumber(c.version.cityFuelConsumption, 2)}}
+              {{c.version.cityFuelConsumption | formatNumber:2}}
             </td>
           </tr>
           <tr>
             <td><b>Highway fuel consumption</b></td>
             <td *ngFor="let c of carsToCompare">
-              {{formatNumber(c.version.highwayFuelConsumption, 2)}}
+              {{c.version.highwayFuelConsumption | formatNumber:2}}
             </td>
           </tr>
           <tr>
             <td><b>Mixed fuel consumption</b></td>
             <td *ngFor="let c of carsToCompare">
-              {{formatNumber(c.version.mixedFuelConsumption, 2)}}
+              {{c.version.mixedFuelConsumption | formatNumber:2}}
             </td>
           </tr>
           <tr>
             <td><b>Average fuel consumption</b></td>
             <td *ngFor="let c of carsToCompare">
-              {{formatNumber(c.version.averageFuelConsumption, 2)}}
+              {{c.version.averageFuelConsumption | formatNumber:2}}
             </td>
           </tr>
           </tbody>

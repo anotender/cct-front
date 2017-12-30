@@ -13,10 +13,9 @@ import {Car} from "../../model/car";
 import {FuelRefill} from "../../model/fuel-refill";
 import {CarService} from "../../service/car.service";
 import {FuelRefillService} from "../../service/fuel-refill.service";
-import {DateUtils} from "../../util/date.utils";
-import {NumberUtils} from "../../util/number.utils";
 import {ToastrService} from "ngx-toastr";
 import {Modal} from "ngx-modialog/plugins/bootstrap";
+import {DateUtils} from "../../util/date.utils";
 
 @Component({
   selector: 'app-user-cars',
@@ -27,9 +26,6 @@ export class UserCarsComponent implements OnInit {
 
   vehicles: Vehicle[] = [];
   selectedVehicle: Vehicle = null;
-
-  formatDate: (millis: number) => string = DateUtils.formatDate;
-  formatNumber: (n: number, fractionDigits: number) => string = NumberUtils.formatNumber;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -123,7 +119,7 @@ export class UserCarsComponent implements OnInit {
   }
 
   deleteFuelRefill(fuelRefill: FuelRefill): void {
-    this.showConfirmationDialog('You are trying to delete fuel refill from ' + this.formatDate(fuelRefill.date), res => {
+    this.showConfirmationDialog('You are trying to delete fuel refill from ' + DateUtils.formatDate(fuelRefill.date), res => {
       this.progress.start();
       this.fuelRefillService
         .delete(fuelRefill.id)

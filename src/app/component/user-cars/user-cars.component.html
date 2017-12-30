@@ -66,8 +66,8 @@
           <div class="panel-heading">
             <div class="row panel-heading-row">
               <h3 class="panel-title pull-left">
-                {{'Fuel refills (Average fuel consumption: ' +
-                formatNumber(countAverageFuelConsumption(selectedVehicle.fuelRefills), 2) + ')'}}
+                {{'Fuel refills (Average fuel consumption: '
+                + (countAverageFuelConsumption(selectedVehicle.fuelRefills) | formatNumber:2) + ')'}}
               </h3>
               <span class="glyphicon glyphicon-plus pull-right link" aria-hidden="true"
                     (click)="fuelRefillFormModal.open()"></span>
@@ -85,10 +85,10 @@
             </thead>
             <tbody>
             <tr *ngFor="let fuelRefill of selectedVehicle.fuelRefills">
-              <td>{{formatDate(fuelRefill.date)}}</td>
+              <td>{{fuelRefill.date | formatDate}}</td>
               <td>{{fuelRefill.liters}}</td>
               <td>{{fuelRefill.distance}}</td>
-              <td>{{formatNumber(fuelRefill.averageFuelConsumption, 2)}}</td>
+              <td>{{fuelRefill.averageFuelConsumption | formatNumber:2}}</td>
               <td><span class="glyphicon glyphicon-trash glyphicon-red link" aria-hidden="true"
                         (click)="deleteFuelRefill(fuelRefill)"></span></td>
             </tr>

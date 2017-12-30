@@ -23,7 +23,7 @@
           <tbody>
           <tr>
             <td>Average rating</td>
-            <td>{{formatNumber(averageRating, 2)}}</td>
+            <td>{{averageRating | formatNumber:2}}</td>
           </tr>
           <tr>
             <td>Years</td>
@@ -35,23 +35,23 @@
           </tr>
           <tr>
             <td>Fuel</td>
-            <td>{{formatFuel(selectedVersion.fuel)}}</td>
+            <td>{{selectedVersion.fuel | formatFuel}}</td>
           </tr>
           <tr>
             <td>City fuel consumption</td>
-            <td>{{formatNumber(selectedVersion.cityFuelConsumption, 2)}}</td>
+            <td>{{selectedVersion.cityFuelConsumption | formatNumber:2}}</td>
           </tr>
           <tr>
             <td>Highway fuel consumption</td>
-            <td>{{formatNumber(selectedVersion.highwayFuelConsumption, 2)}}</td>
+            <td>{{selectedVersion.highwayFuelConsumption | formatNumber:2}}</td>
           </tr>
           <tr>
             <td>Mixed fuel consumption</td>
-            <td>{{formatNumber(selectedVersion.mixedFuelConsumption, 2)}}</td>
+            <td>{{selectedVersion.mixedFuelConsumption | formatNumber:2}}</td>
           </tr>
           <tr>
             <td>Average fuel consumption</td>
-            <td>{{formatNumber(selectedVersion.averageFuelConsumption, 2)}}</td>
+            <td>{{selectedVersion.averageFuelConsumption | formatNumber:2}}</td>
           </tr>
           </tbody>
         </table>
@@ -83,7 +83,7 @@
           {{r.points}}
           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
         </td>
-        <td>{{formatDate(r.date)}}</td>
+        <td>{{r.date | formatDate}}</td>
       </tr>
     </table>
   </div>

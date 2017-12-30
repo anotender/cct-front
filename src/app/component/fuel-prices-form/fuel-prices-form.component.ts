@@ -6,7 +6,6 @@ import {FuelPriceService} from "../../service/fuel-price.service";
 import {Fuel} from "../../model/fuel";
 import {Observable} from "rxjs/Observable";
 import {ToastrService} from "ngx-toastr";
-import {FuelUtils} from "../../util/fuel.utils";
 
 @Component({
   selector: 'app-fuel-prices-form',
@@ -55,10 +54,6 @@ export class FuelPricesFormComponent implements OnInit {
 
   isFormValid(): boolean {
     return this.getUpdatedPrices().length !== 0;
-  }
-
-  formatFuel(fuel: string): string {
-    return FuelUtils.getTextForFuel(fuel);
   }
 
   private getUpdatedPrices(): FuelPrice[] {

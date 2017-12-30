@@ -1,8 +1,6 @@
 import {Injectable} from "@angular/core";
-import {Headers, RequestOptions} from "@angular/http";
 import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
-import {Car} from "../model/car";
 import {AppConfig} from "../config/app.config";
 import {FuelStation} from "../model/fuel-station";
 

@@ -10,8 +10,6 @@ import {VersionService} from "../../service/version.service";
 import {RatingService} from "../../service/rating.service";
 import {Observable} from "rxjs/Observable";
 import {CustomErrorHandler} from "../../config/error.handler";
-import {NumberUtils} from "../../util/number.utils";
-import {FuelUtils} from "../../util/fuel.utils";
 
 @Component({
   selector: 'app-comparison',
@@ -27,9 +25,6 @@ export class ComparisonComponent implements OnInit {
   selectedMake: Make = null;
   selectedModel: Model = null;
   selectedVersion: Version = null;
-
-  formatFuel: (fuel: string) => string = FuelUtils.getTextForFuel;
-  formatNumber: (n: number, fractionDigits: number) => string = NumberUtils.formatNumber;
 
   private delayDuration: number = 1000;
   private lastTimeoutId;

@@ -1,5 +1,4 @@
 import {Injectable} from "@angular/core";
-import {AppComponent} from "../app.component";
 import {Observable} from "rxjs/Rx";
 import {AuthHttp} from "angular2-jwt";
 import {Make} from "../model/make";
